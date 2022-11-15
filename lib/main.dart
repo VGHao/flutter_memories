@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Memories - Daily Journal"),
       ),
+      body: Center(child: Text('Hello')),
     );
   }
 }
