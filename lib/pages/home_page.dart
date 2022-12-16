@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/drawer_items.dart';
+import '../widgets/drawer_widget.dart';
+import '../widgets/floating_action_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,66 +16,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: const Color(0xFFE5F5FF),
-      drawer: SafeArea(
-        child: Drawer(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Image.asset('assets/images/drawer_header.png'),
-                ),
-                DrawerItems(
-                  icon: Icons.color_lens_outlined,
-                  title: "Theme",
-                  onTap: () {},
-                ),
-                const Divider(
-                  height: 10.0,
-                  indent: 15,
-                  endIndent: 20,
-                  thickness: 1,
-                ),
-                DrawerItems(
-                  icon: Icons.lock_outlined,
-                  title: "Diary Lock",
-                  onTap: () {},
-                ),
-                DrawerItems(
-                  icon: Icons.backup_outlined,
-                  title: "Backup & Restore",
-                  onTap: () {},
-                ),
-                const Divider(
-                  indent: 20,
-                  endIndent: 20,
-                  thickness: 1,
-                ),
-                DrawerItems(
-                  icon: Icons.card_giftcard_outlined,
-                  title: "Donate",
-                  onTap: () {},
-                ),
-                DrawerItems(
-                  icon: Icons.share_outlined,
-                  title: "Share App",
-                  onTap: () {},
-                ),
-                DrawerItems(
-                  icon: Icons.settings_outlined,
-                  title: "Settings",
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -106,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 5.0),
                 const Text(
-                  "Click '+' button to start writing your first journey",
+                  "Click + button to start writing your first journey",
                   style: TextStyle(
                     color: Colors.grey,
                   ),
@@ -114,60 +56,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Positioned(
-            width: MediaQuery.of(context).size.width,
-            bottom: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10),
-                    backgroundColor:
-                        Colors.black.withOpacity(0.3), // <-- Button color
-                    foregroundColor: Colors.white, // <-- Splash color
-                  ),
-                  child: const Icon(
-                    Icons.calendar_month_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(20),
-                    backgroundColor: Colors.blue, // <-- Button color
-                    foregroundColor: Colors.white, // <-- Splash color
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10),
-                    backgroundColor: Colors.black.withOpacity(0.3),
-                    foregroundColor: Colors.white, // <-- Splash color
-                  ),
-                  child: const Icon(
-                    Icons.photo_library_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const FloatingButtonWidget(),
         ],
       ),
     );
