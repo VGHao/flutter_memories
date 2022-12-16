@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../pages/setting_page.dart';
 import 'drawer_items.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -62,7 +62,14 @@ class DrawerWidget extends StatelessWidget {
               DrawerItems(
                 icon: Icons.settings_outlined,
                 title: "Settings",
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingPage()),
+                  );
+                },
               ),
             ],
           ),
