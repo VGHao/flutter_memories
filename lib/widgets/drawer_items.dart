@@ -10,7 +10,7 @@ class DrawerItems extends StatelessWidget {
 
   final IconData icon;
   final String title;
-  final Function onTap;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,7 @@ class DrawerItems extends StatelessWidget {
           fontSize: 16,
         ),
       ),
-      onTap: () {
-        onTap;
-      },
+      onTap: onTap,
     );
   }
 }
