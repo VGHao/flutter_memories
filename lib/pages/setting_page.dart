@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -39,68 +40,76 @@ class _SettingPageState extends State<SettingPage> {
           const ComponentTitle(
             title: 'Data Security',
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.lock_outline,
             title: 'Diary Lock',
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PasscodePage()));
+            },
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.cloud_upload_outlined,
             title: 'Backup & Restore',
+            onTap: () {},
           ),
 
           // Notifications
           const ComponentTitle(
             title: 'Notifications',
           ),
-          Container(
-            height: 60,
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Icon(
-                    Icons.notifications,
-                    size: 28,
-                    color: Colors.blueAccent,
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Icon(
+                      Icons.notifications,
+                      size: 28,
+                      color: Colors.blueAccent,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Reminder time',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Reminder time',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '21:00',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ],
+                        Text(
+                          '21:00',
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Switch(
-                      value: active,
-                      onChanged: (bool value) {
-                        setState(() {
-                          active = value;
-                        });
-                      }),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Switch(
+                        value: active,
+                        onChanged: (bool value) {
+                          setState(() {
+                            active = value;
+                          });
+                        }),
+                  )
+                ],
+              ),
             ),
           ),
 
@@ -108,26 +117,30 @@ class _SettingPageState extends State<SettingPage> {
           const ComponentTitle(
             title: 'Appearance',
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.color_lens_outlined,
             title: 'Theme',
+            onTap: () {},
           ),
 
           // Other
           const ComponentTitle(
             title: 'Other',
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.security,
             title: 'Privacy Policy',
+            onTap: () {},
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.shield,
             title: 'Tems & Conditions',
+            onTap: () {},
           ),
-          const SettingItems(
+          SettingItems(
             icon: Icons.info_outline,
             title: 'About us',
+            onTap: () {},
           ),
         ],
       ),
@@ -162,42 +175,47 @@ class ComponentTitle extends StatelessWidget {
 class SettingItems extends StatelessWidget {
   final IconData icon;
   final String title;
+  final Function() onTap;
 
   const SettingItems({
     super.key,
     required this.icon,
     required this.title,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Icon(
-              icon,
-              color: Colors.blueAccent,
-              size: 28,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Icon(
+                icon,
+                color: Colors.blueAccent,
+                size: 28,
+              ),
             ),
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
