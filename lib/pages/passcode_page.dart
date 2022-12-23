@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import '../services/secure_storage.dart';
 
@@ -90,27 +91,26 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
   }
 
   buildBackButton() {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              PinSecureStorage.deletePinNumber();
-            },
-            height: 50,
-            minWidth: 50,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-          ),
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.all(8),
+      child: MaterialButton(
+        onPressed: () {
+          Navigator.pop(context);
+          // Delete Pin from secure storage
+          PinSecureStorage.deletePinNumber();
+        },
+        height: 50,
+        minWidth: 50,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
         ),
-      ],
+        child: const Icon(
+          Icons.arrow_back_ios,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -125,6 +125,8 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+
+        // Display Pin from secure storage
         // Text(
         //   "your pin is $text".toUpperCase(),
         //   style: const TextStyle(
@@ -252,6 +254,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                       pinIndexSetup("0");
                     },
                   ),
+                  // Del button
                   Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -300,9 +303,11 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
       setState(() {
         firstPin = strPin;
       });
-      print("first $firstPin");
-      showSnackBar(
-          context, Colors.green, 'Please input your Pin again to confirm');
+      // print("first $firstPin");
+      showFlushBar(
+        context,
+        'Input your Pin again',
+      );
       // Clear Pin row
       setState(() {
         pinIndex = 0;
@@ -317,8 +322,12 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         confirmPin = strPin;
       });
       if (firstPin != confirmPin) {
-        print("second: $confirmPin");
-        showSnackBar(context, Colors.red, 'Pin does not match');
+        // print("second: $confirmPin");
+        showFlushBar(
+          context,
+          'Pin does not match',
+        );
+        // Clear Pin row
         setState(() {
           pinIndex = 0;
           pinOneController.clear();
@@ -352,7 +361,6 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
     }
   }
 
-  // Del Button
   clearPin() {
     if (pinIndex == 0) {
       pinIndex = 0;
@@ -452,12 +460,33 @@ class KeyboardNumber extends StatelessWidget {
   }
 }
 
-void showSnackBar(context, color, message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: color,
-      duration: const Duration(seconds: 1),
+void showFlushBar(context, message) {
+  Flushbar(
+    borderRadius: BorderRadius.circular(20),
+    margin: const EdgeInsets.only(top: 18, left: 54, right: 54),
+    padding: EdgeInsets.zero,
+    flushbarStyle: FlushbarStyle.FLOATING,
+    flushbarPosition: FlushbarPosition.TOP,
+    animationDuration: const Duration(milliseconds: 1000),
+    duration: const Duration(seconds: 3),
+    messageText: Container(
+      alignment: Alignment.center,
+      height: 60,
+      width: MediaQuery.of(context).size.width * 0.8,
+      decoration: BoxDecoration(
+        color: Colors.amber[400]!,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
+        ),
+      ),
+      child: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     ),
-  );
+  ).show(context);
 }
