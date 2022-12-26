@@ -3,6 +3,7 @@ import '../widgets/drawer_widget.dart';
 import '../widgets/floating_action_widget.dart';
 
 class HomePage extends StatefulWidget {
+  static const route = '/';
   const HomePage({super.key});
 
   @override
