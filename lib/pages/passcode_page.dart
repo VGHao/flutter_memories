@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../services/secure_storage.dart';
 
 class PasscodePage extends StatefulWidget {
+  static const route = 'passcode-page';
+
   const PasscodePage({super.key});
 
   @override
@@ -97,7 +99,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
       padding: const EdgeInsets.all(8),
       child: MaterialButton(
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, 'setting-page');
           // Delete Pin from secure storage
           PinSecureStorage.deletePinNumber();
         },
@@ -339,7 +341,8 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
       if (firstPin == confirmPin) {
         // Set Pin Number to secure storage
         await PinSecureStorage.setPinNumber(confirmPin);
-        Navigator.pop(context);
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, 'question-page');
       }
     }
   }
@@ -468,14 +471,14 @@ void showFlushBar(context, message) {
     flushbarStyle: FlushbarStyle.FLOATING,
     flushbarPosition: FlushbarPosition.TOP,
     animationDuration: const Duration(milliseconds: 1000),
-    duration: const Duration(seconds: 3),
+    duration: const Duration(seconds: 1),
     messageText: Container(
       alignment: Alignment.center,
       height: 60,
       width: MediaQuery.of(context).size.width * 0.8,
-      decoration: BoxDecoration(
-        color: Colors.amber[400]!,
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
       ),
