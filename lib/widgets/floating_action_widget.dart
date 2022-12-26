@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/create_diary.dart';
 
 class FloatingButtonWidget extends StatelessWidget {
   const FloatingButtonWidget({
@@ -30,7 +31,11 @@ class FloatingButtonWidget extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const CreateDiary()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(20),
