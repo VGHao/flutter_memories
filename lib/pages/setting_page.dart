@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
 
 class SettingPage extends StatefulWidget {
+  static const route = 'setting-page';
   const SettingPage({super.key});
 
   @override
@@ -9,8 +9,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool active = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,116 +31,66 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
       backgroundColor: const Color(0xFFE5F5FF),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Data Scurity
-          const ComponentTitle(
-            title: 'Data Security',
-          ),
-          SettingItems(
-            icon: Icons.lock_outline,
-            title: 'Diary Lock',
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PasscodePage()));
-            },
-          ),
-          SettingItems(
-            icon: Icons.cloud_upload_outlined,
-            title: 'Backup & Restore',
-            onTap: () {},
-          ),
-
-          // Notifications
-          const ComponentTitle(
-            title: 'Notifications',
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Icon(
-                      Icons.notifications,
-                      size: 28,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Reminder time',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          '21:00',
-                          style: TextStyle(fontSize: 13, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Switch(
-                        value: active,
-                        onChanged: (bool value) {
-                          setState(() {
-                            active = value;
-                          });
-                        }),
-                  )
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Data Scurity
+            const ComponentTitle(
+              title: 'Data Security',
             ),
-          ),
+            SettingItems(
+              icon: Icons.lock_outline,
+              title: 'Diary Lock',
+              onTap: () {
+                Navigator.pushReplacementNamed(context, 'passcode-page');
+              },
+            ),
+            SettingItems(
+              icon: Icons.cloud_upload_outlined,
+              title: 'Backup & Restore',
+              onTap: () {},
+            ),
 
-          // Appearance
-          const ComponentTitle(
-            title: 'Appearance',
-          ),
-          SettingItems(
-            icon: Icons.color_lens_outlined,
-            title: 'Theme',
-            onTap: () {},
-          ),
+            // Notifications
+            const ComponentTitle(
+              title: 'Notifications',
+            ),
+            const RemindTimeTile(
+              time: '21:10',
+            ),
 
-          // Other
-          const ComponentTitle(
-            title: 'Other',
-          ),
-          SettingItems(
-            icon: Icons.security,
-            title: 'Privacy Policy',
-            onTap: () {},
-          ),
-          SettingItems(
-            icon: Icons.shield,
-            title: 'Tems & Conditions',
-            onTap: () {},
-          ),
-          SettingItems(
-            icon: Icons.info_outline,
-            title: 'About us',
-            onTap: () {},
-          ),
-        ],
+            // Appearance
+            const ComponentTitle(
+              title: 'Appearance',
+            ),
+            SettingItems(
+              icon: Icons.color_lens_outlined,
+              title: 'Theme',
+              onTap: () {},
+            ),
+
+            // Other
+            const ComponentTitle(
+              title: 'Other',
+            ),
+            SettingItems(
+              icon: Icons.security,
+              title: 'Privacy Policy',
+              onTap: () {},
+            ),
+            SettingItems(
+              icon: Icons.shield,
+              title: 'Tems & Conditions',
+              onTap: () {},
+            ),
+            SettingItems(
+              icon: Icons.info_outline,
+              title: 'About us',
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -212,6 +160,77 @@ class SettingItems extends StatelessWidget {
                 color: Colors.black,
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RemindTimeTile extends StatefulWidget {
+  final String time;
+  const RemindTimeTile({super.key, required this.time});
+
+  @override
+  State<RemindTimeTile> createState() => _RemindTimeTileState();
+}
+
+bool active = true;
+
+class _RemindTimeTileState extends State<RemindTimeTile> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Icon(
+                Icons.notifications,
+                size: 28,
+                color: Colors.blueAccent,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Reminder time',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    widget.time,
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Switch(
+                value: active,
+                onChanged: (bool value) {
+                  setState(() {
+                    active = value;
+                  });
+                },
               ),
             ),
           ],
