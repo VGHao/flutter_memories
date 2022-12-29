@@ -16,6 +16,7 @@ dependencies:
   flutter_secure_storage: any
   another_flushbar: any
   intl: ^0.18.0
+  confirm_dialog: ^1.0.1
 
 dev_dependencies:
   flutter_test:

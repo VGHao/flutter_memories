@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +12,21 @@ class CreateDiary extends StatefulWidget {
 class _CreateDiaryState extends State<CreateDiary> {
   DateTime selectedDate = DateTime.now();
   DateTime now = DateTime.now();
+  List<String> moodIconList = [
+    'assets/images/mood_cry.png',
+    'assets/images/mood_sad.png',
+    'assets/images/mood_neutral.png',
+    'assets/images/mood_happy.png',
+    'assets/images/mood_excited.png',
+  ];
+  List<String> moodList = [
+    'heartbroken',
+    'unhappy',
+    'neutral',
+    'happy',
+    'delighted',
+  ];
+  int? selectedMood = 2;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -27,6 +43,20 @@ class _CreateDiaryState extends State<CreateDiary> {
     }
   }
 
+  Future<void> _discardConfirm(BuildContext context) async {
+    if (await confirm(
+      context,
+      title: const Text('Discard'),
+      content: const Text(
+          "Your changes haven't been saved. \nDo you want to discard the changes?"),
+      textOK: const Text('OK'),
+      textCancel: const Text('CANCEL'),
+    )) {
+      return Navigator.of(context).pop();
+    }
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +66,15 @@ class _CreateDiaryState extends State<CreateDiary> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => _discardConfirm(context),
+        ),
         title: TextButton(
-          onPressed: () {
-            _selectDate(context);
-          },
+          onPressed: () => _selectDate(context),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 DateFormat.yMMMd().format(selectedDate),
@@ -62,7 +93,9 @@ class _CreateDiaryState extends State<CreateDiary> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              //Save data to Database
+            },
             icon: const Icon(Icons.check, color: Colors.blue),
           ),
         ],
@@ -83,8 +116,8 @@ class _CreateDiaryState extends State<CreateDiary> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
-                  children: const [
-                    Align(
+                  children: [
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'How was your day?',
@@ -94,7 +127,77 @@ class _CreateDiaryState extends State<CreateDiary> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 100),
+                    const SizedBox(height: 10),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) => ScaleTransition(
+                        scale: animation,
+                        alignment: Alignment.centerLeft,
+                        child: child,
+                      ),
+                      child: selectedMood != null
+                          ? IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedMood = null;
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 2,
+                                      shape: const CircleBorder(),
+                                      padding: const EdgeInsets.all(15),
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    child: Image.asset(
+                                        moodIconList[selectedMood!],
+                                        height: 32),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 30,
+                                    thickness: 1.0,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "It was ",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: moodList[selectedMood!],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const TextSpan(text: " today.")
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: List<Widget>.generate(
+                                  5,
+                                  (index) => IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedMood = index;
+                                      });
+                                    },
+                                    icon: Image.asset(moodIconList[index]),
+                                    iconSize: 45,
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ),
                   ],
                 ),
               ),
