@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:intl/intl.dart';
 
 class CreateDiary extends StatefulWidget {
@@ -10,6 +13,9 @@ class CreateDiary extends StatefulWidget {
 }
 
 class _CreateDiaryState extends State<CreateDiary> {
+  final quill.QuillController _controller = quill.QuillController.basic();
+  final FocusNode _focusNode = FocusNode();
+  bool isFocus = false;
   DateTime selectedDate = DateTime.now();
   DateTime now = DateTime.now();
   List<String> moodIconList = [
@@ -59,200 +65,256 @@ class _CreateDiaryState extends State<CreateDiary> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFE5F5FF),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => _discardConfirm(context),
-        ),
-        title: TextButton(
-          onPressed: () => _selectDate(context),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                DateFormat.yMMMd().format(selectedDate),
-                style: const TextStyle(
+    return GestureDetector(
+      onTap: () => setState(() {
+        _focusNode.unfocus();
+        isFocus = false;
+      }),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFE5F5FF),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black,
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () => _discardConfirm(context),
+          ),
+          title: TextButton(
+            onPressed: () => _selectDate(context),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  DateFormat.yMMMd().format(selectedDate),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+                const Icon(
+                  Icons.arrow_drop_down_rounded,
                   color: Colors.black,
-                  fontSize: 18,
+                  size: 30,
                 ),
-              ),
-              const Icon(
-                Icons.arrow_drop_down_rounded,
-                color: Colors.black,
-                size: 30,
-              ),
-            ],
+              ],
+            ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                //Save data to Database
+              },
+              icon: const Icon(Icons.check, color: Colors.blue),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              //Save data to Database
-            },
-            icon: const Icon(Icons.check, color: Colors.blue),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'How was your day?',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'How was your day?',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) => ScaleTransition(
-                        scale: animation,
-                        alignment: Alignment.centerLeft,
-                        child: child,
-                      ),
-                      child: selectedMood != null
-                          ? IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedMood = null;
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 2,
-                                      shape: const CircleBorder(),
-                                      padding: const EdgeInsets.all(15),
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    child: Image.asset(
-                                        moodIconList[selectedMood!],
-                                        height: 32),
-                                  ),
-                                  const VerticalDivider(
-                                    width: 30,
-                                    thickness: 1.0,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "It was ",
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
+                      const SizedBox(height: 10),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) =>
+                            ScaleTransition(
+                          scale: animation,
+                          alignment: Alignment.centerLeft,
+                          child: child,
+                        ),
+                        child: selectedMood != null
+                            ? IntrinsicHeight(
+                                child: Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedMood = null;
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 2,
+                                        shape: const CircleBorder(),
+                                        padding: const EdgeInsets.all(15),
+                                        backgroundColor: Colors.white,
                                       ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: moodList[selectedMood!],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const TextSpan(text: " today.")
-                                      ],
+                                      child: Image.asset(
+                                          moodIconList[selectedMood!],
+                                          height: 32),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: List<Widget>.generate(
-                                  5,
-                                  (index) => IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedMood = index;
-                                      });
-                                    },
-                                    icon: Image.asset(moodIconList[index]),
-                                    iconSize: 45,
+                                    const VerticalDivider(
+                                      width: 30,
+                                      thickness: 1.0,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: "It was ",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: moodList[selectedMood!],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const TextSpan(text: " today.")
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: List<Widget>.generate(
+                                    5,
+                                    (index) => IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedMood = index;
+                                        });
+                                      },
+                                      icon: Image.asset(moodIconList[index]),
+                                      iconSize: 45,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: const [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Tell me about your day',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Tell me about your day',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    Divider(),
-                    SizedBox(height: 100),
-                  ],
+                      const Divider(),
+                      quill.QuillEditor(
+                        minHeight: 100,
+                        controller: _controller,
+                        scrollController: ScrollController(),
+                        scrollable: true,
+                        focusNode: _focusNode,
+                        autoFocus: false,
+                        readOnly: false,
+                        placeholder: 'Write something...',
+                        padding: EdgeInsets.zero,
+                        expands: false,
+                        onTapDown: (details, p1) {
+                          setState(() {
+                            isFocus = true;
+                          });
+                          return false;
+                        },
+                      ),
+                      isFocus
+                          ? quill.QuillToolbar.basic(
+                              controller: _controller,
+                              toolbarIconSize: 22,
+                              showDividers: false,
+                              showFontFamily: false,
+                              showFontSize: false,
+                              showBoldButton: true,
+                              showItalicButton: true,
+                              showUnderLineButton: true,
+                              showStrikeThrough: true,
+                              showInlineCode: false,
+                              showColorButton: true,
+                              showBackgroundColorButton: true,
+                              showClearFormat: true,
+                              showLeftAlignment: false,
+                              showCenterAlignment: false,
+                              showRightAlignment: false,
+                              showJustifyAlignment: false,
+                              showHeaderStyle: false,
+                              showListNumbers: false,
+                              showListBullets: false,
+                              showListCheck: false,
+                              showCodeBlock: false,
+                              showQuote: false,
+                              showIndent: false,
+                              showLink: false,
+                              showUndo: false,
+                              showRedo: false,
+                              showSearchButton: false,
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: const [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Your photos',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: const [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Your photos',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 100),
-                  ],
+                      SizedBox(height: 120),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

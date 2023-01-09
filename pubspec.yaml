@@ -15,8 +15,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_secure_storage: any
   another_flushbar: any
-  intl: ^0.18.0
+  intl: ^0.17.0
   confirm_dialog: ^1.0.1
+  flutter_quill: ^6.1.12
 
 dev_dependencies:
   flutter_test:
