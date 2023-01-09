@@ -111,211 +111,233 @@ class _CreateDiaryState extends State<CreateDiary> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'How was your day?',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const SizedBox(height: 10),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        transitionBuilder: (child, animation) =>
-                            ScaleTransition(
-                          scale: animation,
-                          alignment: Alignment.centerLeft,
-                          child: child,
-                        ),
-                        child: selectedMood != null
-                            ? IntrinsicHeight(
-                                child: Row(
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          selectedMood = null;
-                                        });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 2,
-                                        shape: const CircleBorder(),
-                                        padding: const EdgeInsets.all(15),
-                                        backgroundColor: Colors.white,
-                                      ),
-                                      child: Image.asset(
-                                          moodIconList[selectedMood!],
-                                          height: 32),
-                                    ),
-                                    const VerticalDivider(
-                                      width: 30,
-                                      thickness: 1.0,
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "It was ",
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                        ),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: moodList[selectedMood!],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
+                      child: Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'How was your day?',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (child, animation) =>
+                                ScaleTransition(
+                              scale: animation,
+                              alignment: Alignment.centerLeft,
+                              child: child,
+                            ),
+                            child: selectedMood != null
+                                ? IntrinsicHeight(
+                                    child: Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedMood = null;
+                                            });
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 2,
+                                            shape: const CircleBorder(),
+                                            padding: const EdgeInsets.all(15),
+                                            backgroundColor: Colors.white,
                                           ),
-                                          const TextSpan(text: " today.")
-                                        ],
-                                      ),
+                                          child: Image.asset(
+                                              moodIconList[selectedMood!],
+                                              height: 32),
+                                        ),
+                                        const VerticalDivider(
+                                          width: 30,
+                                          thickness: 1.0,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            text: "It was ",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: moodList[selectedMood!],
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const TextSpan(text: " today.")
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                            : SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: List<Widget>.generate(
-                                    5,
-                                    (index) => IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          selectedMood = index;
-                                        });
-                                      },
-                                      icon: Image.asset(moodIconList[index]),
-                                      iconSize: 45,
+                                  )
+                                : SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: List<Widget>.generate(
+                                        5,
+                                        (index) => IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedMood = index;
+                                            });
+                                          },
+                                          icon:
+                                              Image.asset(moodIconList[index]),
+                                          iconSize: 45,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Tell me about your day',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
                               ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Tell me about your day',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                      ),
-                      const Divider(),
-                      quill.QuillEditor(
-                        minHeight: 100,
-                        controller: _controller,
-                        scrollController: ScrollController(),
-                        scrollable: true,
-                        focusNode: _focusNode,
-                        autoFocus: false,
-                        readOnly: false,
-                        placeholder: 'Write something...',
-                        padding: EdgeInsets.zero,
-                        expands: false,
-                        onTapDown: (details, p1) {
-                          setState(() {
-                            isFocus = true;
-                          });
-                          return false;
-                        },
-                      ),
-                      isFocus
-                          ? quill.QuillToolbar.basic(
-                              controller: _controller,
-                              toolbarIconSize: 22,
-                              showDividers: false,
-                              showFontFamily: false,
-                              showFontSize: false,
-                              showBoldButton: true,
-                              showItalicButton: true,
-                              showUnderLineButton: true,
-                              showStrikeThrough: true,
-                              showInlineCode: false,
-                              showColorButton: true,
-                              showBackgroundColorButton: true,
-                              showClearFormat: true,
-                              showLeftAlignment: false,
-                              showCenterAlignment: false,
-                              showRightAlignment: false,
-                              showJustifyAlignment: false,
-                              showHeaderStyle: false,
-                              showListNumbers: false,
-                              showListBullets: false,
-                              showListCheck: false,
-                              showCodeBlock: false,
-                              showQuote: false,
-                              showIndent: false,
-                              showLink: false,
-                              showUndo: false,
-                              showRedo: false,
-                              showSearchButton: false,
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: const [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Your photos',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
+                          const Divider(),
+                          quill.QuillEditor(
+                            minHeight: 100,
+                            controller: _controller,
+                            scrollController: ScrollController(),
+                            scrollable: true,
+                            focusNode: _focusNode,
+                            autoFocus: false,
+                            readOnly: false,
+                            placeholder: 'Write something...',
+                            padding: EdgeInsets.zero,
+                            expands: false,
+                            onTapDown: (details, p1) {
+                              setState(() {
+                                isFocus = true;
+                              });
+                              return false;
+                            },
                           ),
-                        ),
+                        ],
                       ),
-                      SizedBox(height: 120),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: const [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Your photos',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 120),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: isFocus
+                  ? Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
+                      ),
+                      child: quill.QuillToolbar.basic(
+                        controller: _controller,
+                        toolbarIconSize: 26,
+                        toolbarIconAlignment: WrapAlignment.spaceAround,
+                        showDividers: false,
+                        showFontFamily: false,
+                        showFontSize: false,
+                        showBoldButton: true,
+                        showItalicButton: true,
+                        showUnderLineButton: true,
+                        showStrikeThrough: true,
+                        showInlineCode: false,
+                        showColorButton: true,
+                        showBackgroundColorButton: true,
+                        showClearFormat: true,
+                        showLeftAlignment: false,
+                        showCenterAlignment: false,
+                        showRightAlignment: false,
+                        showJustifyAlignment: false,
+                        showHeaderStyle: false,
+                        showListNumbers: false,
+                        showListBullets: false,
+                        showListCheck: false,
+                        showCodeBlock: false,
+                        showQuote: false,
+                        showIndent: false,
+                        showLink: false,
+                        showUndo: false,
+                        showRedo: false,
+                        showSearchButton: false,
+                      ),
+                    )
+                  : Container(),
+            ),
+          ],
         ),
       ),
     );
