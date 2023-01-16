@@ -48,3 +48,18 @@ class AnswerSecureStorage {
   static deleteSecurityAnswer() async =>
       await _storage.delete(key: _securityAnswer);
 }
+
+class CheckUserSession {
+  static const _userSession = 'userSession';
+
+  // Set user Session to secure storage
+  static Future setUserSession(String answer) async =>
+      await _storage.write(key: _userSession, value: answer);
+
+  // Read user Session from secure storage
+  static Future<String?> getUserSession() async =>
+      await _storage.read(key: _userSession);
+
+  // Delete user Session from secure storage
+  static deleteUserSession() async => await _storage.delete(key: _userSession);
+}
