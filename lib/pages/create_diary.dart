@@ -2,7 +2,12 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'dart:async';
+
+import 'package:path_provider/path_provider.dart';
 
 class CreateDiary extends StatefulWidget {
   const CreateDiary({super.key});
@@ -17,6 +22,10 @@ class _CreateDiaryState extends State<CreateDiary> {
   bool isFocus = false;
   DateTime selectedDate = DateTime.now();
   DateTime now = DateTime.now();
+  int? selectedMood = 2;
+  final ImagePicker _picker = ImagePicker();
+  List<String> _imagesPathList = [];
+
   List<String> moodIconList = [
     'assets/images/mood_cry.png',
     'assets/images/mood_sad.png',
@@ -31,7 +40,6 @@ class _CreateDiaryState extends State<CreateDiary> {
     'happy',
     'delighted',
   ];
-  int? selectedMood = 2;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -60,6 +68,42 @@ class _CreateDiaryState extends State<CreateDiary> {
       return Navigator.of(context).pop();
     }
     return;
+  }
+
+  Future<void> selectImages() async {
+    try {
+      var pickedImages = await _picker.pickMultiImage();
+      if (pickedImages.isNotEmpty) {
+        await copyImagesToDir(pickedImages);
+      }
+      print(_imagesPathList.toString());
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> copyImagesToDir(List<XFile> pickedImages) async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path;
+    List<String> newPaths = [];
+    for (var img in pickedImages) {
+      File originalImg = File(img.path);
+      // print(originalImg.path);
+      File newImage = await originalImg.copy("$path/${img.name}");
+      newPaths.add(newImage.path);
+    }
+    _imagesPathList = _imagesPathList + newPaths;
+  }
+
+  Future<void> removeImg(String path) async {
+    try {
+      await File(path).delete();
+      _imagesPathList.remove(path);
+      setState(() {});
+    } catch (e) {
+      return;
+    }
   }
 
   @override
@@ -119,286 +163,305 @@ class _CreateDiaryState extends State<CreateDiary> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'How was your day?',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (child, animation) =>
-                                ScaleTransition(
-                              scale: animation,
-                              alignment: Alignment.centerLeft,
-                              child: child,
-                            ),
-                            child: selectedMood != null
-                                ? IntrinsicHeight(
-                                    child: Row(
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              selectedMood = null;
-                                            });
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 2,
-                                            shape: const CircleBorder(),
-                                            padding: const EdgeInsets.all(15),
-                                            backgroundColor: Colors.white,
-                                          ),
-                                          child: Image.asset(
-                                              moodIconList[selectedMood!],
-                                              height: 32),
-                                        ),
-                                        const VerticalDivider(
-                                          width: 30,
-                                          thickness: 1.0,
-                                        ),
-                                        RichText(
-                                          text: TextSpan(
-                                            text: "It was ",
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                            ),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: moodList[selectedMood!],
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const TextSpan(text: " today.")
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: List<Widget>.generate(
-                                        5,
-                                        (index) => IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              selectedMood = index;
-                                            });
-                                          },
-                                          icon:
-                                              Image.asset(moodIconList[index]),
-                                          iconSize: 45,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    moodSelectWidget(),
                     const SizedBox(height: 20),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Tell me about your day',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          const Divider(),
-                          quill.QuillEditor(
-                            minHeight: 100,
-                            controller: _controller,
-                            scrollController: ScrollController(),
-                            scrollable: true,
-                            focusNode: _focusNode,
-                            autoFocus: false,
-                            readOnly: false,
-                            placeholder: 'Write something...',
-                            padding: EdgeInsets.zero,
-                            expands: false,
-                            onTapDown: (details, p1) {
-                              setState(() {
-                                isFocus = true;
-                              });
-                              return false;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    contentWidget(),
                     const SizedBox(height: 20),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Your photos',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10.0),
-                          GridView.count(
-                            shrinkWrap: true,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 5.0,
-                            mainAxisSpacing: 5.0,
-                            children: [
-                              Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                  ),
-                                  Positioned(
-                                      top: 6,
-                                      right: 6,
-                                      child: SizedBox(
-                                        width: 22,
-                                        height: 22,
-                                        child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            elevation: 0,
-                                            shape: const CircleBorder(),
-                                            backgroundColor:
-                                                Colors.black.withOpacity(0.3),
-                                            foregroundColor: Colors.white,
-                                          ),
-                                          child:
-                                              const Icon(Icons.close, size: 12),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: DottedBorder(
-                                  color: Colors.blue,
-                                  dashPattern: const [10, 3],
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(15.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.add_photo_alternate_rounded,
-                                        color: Colors.blue,
-                                        size: 32,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
+                    imageUploadWidget(),
                     const SizedBox(height: 50),
                   ],
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: isFocus
-                  ? Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(30),
-                        ),
-                      ),
-                      child: quill.QuillToolbar.basic(
-                        controller: _controller,
-                        toolbarIconSize: 26,
-                        toolbarIconAlignment: WrapAlignment.spaceAround,
-                        showDividers: false,
-                        showFontFamily: false,
-                        showFontSize: false,
-                        showBoldButton: true,
-                        showItalicButton: true,
-                        showUnderLineButton: true,
-                        showStrikeThrough: true,
-                        showInlineCode: false,
-                        showColorButton: true,
-                        showBackgroundColorButton: true,
-                        showClearFormat: true,
-                        showLeftAlignment: false,
-                        showCenterAlignment: false,
-                        showRightAlignment: false,
-                        showJustifyAlignment: false,
-                        showHeaderStyle: false,
-                        showListNumbers: false,
-                        showListBullets: false,
-                        showListCheck: false,
-                        showCodeBlock: false,
-                        showQuote: false,
-                        showIndent: false,
-                        showLink: false,
-                        showUndo: false,
-                        showRedo: false,
-                        showSearchButton: false,
-                      ),
-                    )
-                  : Container(),
-            ),
+            textToolbarWidget(),
           ],
         ),
+      ),
+    );
+  }
+
+  Container moodSelectWidget() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'How was your day?',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) => ScaleTransition(
+              scale: animation,
+              alignment: Alignment.centerLeft,
+              child: child,
+            ),
+            child: selectedMood != null
+                ? IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedMood = null;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 2,
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(15),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Image.asset(moodIconList[selectedMood!],
+                              height: 32),
+                        ),
+                        const VerticalDivider(
+                          width: 30,
+                          thickness: 1.0,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: "It was ",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: moodList[selectedMood!],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const TextSpan(text: " today.")
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: List<Widget>.generate(
+                        5,
+                        (index) => IconButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedMood = index;
+                            });
+                          },
+                          icon: Image.asset(moodIconList[index]),
+                          iconSize: 45,
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget contentWidget() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Tell me about your day',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const Divider(),
+          quill.QuillEditor(
+            minHeight: 100,
+            controller: _controller,
+            scrollController: ScrollController(),
+            scrollable: true,
+            focusNode: _focusNode,
+            autoFocus: false,
+            readOnly: false,
+            placeholder: 'Write something...',
+            padding: EdgeInsets.zero,
+            expands: false,
+            onTapDown: (details, p1) {
+              setState(() {
+                isFocus = true;
+              });
+              return false;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget textToolbarWidget() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: isFocus
+          ? Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
+              ),
+              child: quill.QuillToolbar.basic(
+                controller: _controller,
+                toolbarIconSize: 26,
+                toolbarIconAlignment: WrapAlignment.spaceAround,
+                showDividers: false,
+                showFontFamily: false,
+                showFontSize: false,
+                showBoldButton: true,
+                showItalicButton: true,
+                showUnderLineButton: true,
+                showStrikeThrough: true,
+                showInlineCode: false,
+                showColorButton: true,
+                showBackgroundColorButton: true,
+                showClearFormat: true,
+                showLeftAlignment: false,
+                showCenterAlignment: false,
+                showRightAlignment: false,
+                showJustifyAlignment: false,
+                showHeaderStyle: false,
+                showListNumbers: false,
+                showListBullets: false,
+                showListCheck: false,
+                showCodeBlock: false,
+                showQuote: false,
+                showIndent: false,
+                showLink: false,
+                showUndo: false,
+                showRedo: false,
+                showSearchButton: false,
+              ),
+            )
+          : Container(),
+    );
+  }
+
+  Widget imageUploadWidget() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Your photos',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            crossAxisSpacing: 5.0,
+            mainAxisSpacing: 5.0,
+            children: [
+              ...List<Widget>.generate(
+                _imagesPathList.length,
+                (int index) => Stack(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.file(
+                          File(_imagesPathList[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        top: 6,
+                        right: 6,
+                        child: SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              removeImg(_imagesPathList[index]);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              elevation: 0,
+                              shape: const CircleBorder(),
+                              backgroundColor: Colors.black.withOpacity(0.3),
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Icon(Icons.close, size: 12),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  selectImages();
+                },
+                child: DottedBorder(
+                  color: Colors.blue,
+                  dashPattern: const [10, 3],
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(15.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.add_photo_alternate_rounded,
+                        color: Colors.blue,
+                        size: 32,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
       ),
     );
   }

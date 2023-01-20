@@ -19,6 +19,9 @@ dependencies:
   confirm_dialog: ^1.0.1
   flutter_quill: ^6.1.12
   dotted_border: ^2.0.0+3
+  dropdown_button2: ^1.9.2
+  image_picker: ^0.8.6
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:
