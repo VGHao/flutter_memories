@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:intl/intl.dart';
@@ -271,8 +270,8 @@ class _CreateDiaryState extends State<CreateDiary> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Column(
-                        children: const [
-                          Align(
+                        children: [
+                          const Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Your photos',
@@ -282,7 +281,68 @@ class _CreateDiaryState extends State<CreateDiary> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 120),
+                          const SizedBox(height: 10.0),
+                          GridView.count(
+                            shrinkWrap: true,
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 5.0,
+                            children: [
+                              Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 6,
+                                      right: 6,
+                                      child: SizedBox(
+                                        width: 22,
+                                        height: 22,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            elevation: 0,
+                                            shape: const CircleBorder(),
+                                            backgroundColor:
+                                                Colors.black.withOpacity(0.3),
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          child:
+                                              const Icon(Icons.close, size: 12),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: DottedBorder(
+                                  color: Colors.blue,
+                                  dashPattern: const [10, 3],
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(15.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate_rounded,
+                                        color: Colors.blue,
+                                        size: 32,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),

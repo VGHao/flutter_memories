@@ -18,6 +18,7 @@ dependencies:
   intl: ^0.17.0
   confirm_dialog: ^1.0.1
   flutter_quill: ^6.1.12
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:
