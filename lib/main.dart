@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
-import 'package:flutter_memories_dailyjournal/pages/security_question.dart';
+import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import 'package:flutter_memories_dailyjournal/pages/setting_page.dart';
 import 'pages/home_page.dart';
 
@@ -8,9 +7,14 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,12 +23,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const HomePage(),
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => ChangePage(),
         'setting-page': (context) => SettingPage(),
-        'passcode-page':(context) => PasscodePage(),
-        'question-page': (context) => SecurityQuestion(),
+        'set-lock': (context) => SetDiaryLock(),
       },
     );
   }

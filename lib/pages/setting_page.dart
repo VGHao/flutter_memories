@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/secure_storage.dart';
+import 'passcode_page.dart';
 
 class SettingPage extends StatefulWidget {
   static const route = 'setting-page';
@@ -9,6 +11,22 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  String securePin = "";
+  @override
+  void initState() {
+    super.initState();
+
+    init();
+  }
+
+  Future init() async {
+    String pin = await PinSecureStorage.getPinNumber() ?? '';
+
+    setState(() {
+      securePin = pin;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +44,7 @@ class _SettingPageState extends State<SettingPage> {
           icon: const Icon(Icons.arrow_back),
           color: Colors.black,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/');
           },
         ),
       ),
@@ -43,7 +61,17 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.lock_outline,
               title: 'Diary Lock',
               onTap: () {
-                Navigator.pushReplacementNamed(context, 'passcode-page');
+                if (securePin != "") {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const PasscodePage(checked: 'checkToTurnOff'),
+                    ),
+                  );
+                } else {
+                  Navigator.pushReplacementNamed(context, 'set-lock');
+                }
               },
             ),
             SettingItems(
@@ -227,9 +255,11 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
               child: Switch(
                 value: active,
                 onChanged: (bool value) {
-                  setState(() {
-                    active = value;
-                  });
+                  setState(
+                    () {
+                      active = value;
+                    },
+                  );
                 },
               ),
             ),
