@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/change_theme.dart';
+import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
+import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../services/secure_storage.dart';
 import 'passcode_page.dart';
 
@@ -32,34 +36,26 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
-        backgroundColor: const Color(0xFFE5F5FF),
-        title: const Text('Settings'),
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
+        title: Text("drawer_settings".tr()),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          color: Colors.black,
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/');
           },
         ),
       ),
-      backgroundColor: const Color(0xFFE5F5FF),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Data Scurity
-            const ComponentTitle(
-              title: 'Data Security',
+            // Data Security
+            ComponentTitle(
+              title: 'setting_data_security'.tr(),
             ),
             SettingItems(
               icon: Icons.lock_outline,
-              title: 'Diary Lock',
+              title: 'setting_diary_lock'.tr(),
               onTap: () {
                 if (securePin != "") {
                   Navigator.pushReplacement(
@@ -76,45 +72,67 @@ class _SettingPageState extends State<SettingPage> {
             ),
             SettingItems(
               icon: Icons.cloud_upload_outlined,
-              title: 'Backup & Restore',
-              onTap: () {},
+              title: 'setting_backup_restore'.tr(),
+              onTap: () {
+                context.setLocale(const Locale('en', "US"));
+              },
             ),
 
             // Notifications
-            const ComponentTitle(
-              title: 'Notifications',
+            ComponentTitle(
+              title: 'setting_notifications'.tr(),
             ),
             const RemindTimeTile(
               time: '21:10',
             ),
 
             // Appearance
-            const ComponentTitle(
-              title: 'Appearance',
+            ComponentTitle(
+              title: 'setting_appearance'.tr(),
             ),
             SettingItems(
               icon: Icons.color_lens_outlined,
-              title: 'Theme',
-              onTap: () {},
+              title: 'setting_theme'.tr(),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChangeTheme(),
+                  ),
+                );
+              },
+            ),
+
+            SettingItems(
+              icon: Icons.language,
+              title: 'setting_language'.tr(),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LanguagePage(),
+                  ),
+                );
+              },
             ),
 
             // Other
-            const ComponentTitle(
-              title: 'Other',
+            ComponentTitle(
+              title: 'setting_other'.tr(),
             ),
             SettingItems(
               icon: Icons.security,
-              title: 'Privacy Policy',
+              title: 'setting_privacy_policy'.tr(),
               onTap: () {},
             ),
             SettingItems(
               icon: Icons.shield,
-              title: 'Tems & Conditions',
+              title: 'setting_tems_conditions'.tr(),
               onTap: () {},
             ),
             SettingItems(
               icon: Icons.info_outline,
-              title: 'About us',
+              title: 'setting_about_us'.tr(),
               onTap: () {},
             ),
           ],
@@ -139,7 +157,6 @@ class ComponentTitle extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-          color: Colors.black,
           fontSize: 17,
           fontWeight: FontWeight.w500,
         ),
@@ -162,35 +179,25 @@ class SettingItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(
-                icon,
-                color: Colors.blueAccent,
-                size: 28,
-              ),
-            ),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
+        onTap: onTap,
+        leading: Icon(
+          icon,
+          size: 28,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
@@ -208,62 +215,93 @@ class RemindTimeTile extends StatefulWidget {
 bool active = true;
 
 class _RemindTimeTileState extends State<RemindTimeTile> {
+  String selectedTime = "00:00";
+
+  @override
+  void initState() {
+    init();
+    NotificationApi().setup();
+
+    super.initState();
+  }
+
+  Future init() async {
+    String time = await SelectedTime.getTime() ?? "00:00";
+
+    setState(() {
+      selectedTime = time;
+      print(selectedTime);
+    });
+  }
+
+  Future<void> displayTimeDialog() async {
+    final TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: int.parse(selectedTime.split(":")[0]),
+        minute: int.parse(selectedTime.split(":")[1]),
+      ),
+    );
+    if (time != null) {
+      setState(() {
+        selectedTime = time.format(context);
+        SelectedTime.setTime(selectedTime);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        dense: true,
+        contentPadding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
         ),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(
-                Icons.notifications,
-                size: 28,
-                color: Colors.blueAccent,
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Reminder time',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Text(
-                    widget.time,
-                    style: const TextStyle(fontSize: 13, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Switch(
-                value: active,
-                onChanged: (bool value) {
-                  setState(
-                    () {
-                      active = value;
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
+        onTap: () {
+          displayTimeDialog();
+        },
+        leading: const Icon(
+          Icons.notifications,
+          size: 28,
+        ),
+        title: Text(
+          'setting_reminder'.tr(),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        subtitle: Text(
+          selectedTime != "" ? selectedTime : '00:00',
+          style: const TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+        trailing: Switch(
+          value: active,
+          onChanged: (bool value) {
+            setState(
+              () {
+                active = value;
+              },
+            );
+            if (active == true) {
+              NotificationApi.showScheduledNotification(
+                title: 'Memories - Daily Journal',
+                body: 'Time to write your new diary',
+                payload: 'diary',
+                scheduledDate: DateTime.now(),
+              );
+              print("now: ${DateTime.now()}");
+            } else {
+              print('turn off');
+            }
+          },
         ),
       ),
     );
