@@ -53,8 +53,8 @@ class CheckUserSession {
   static const _userSession = 'userSession';
 
   // Set user Session to secure storage
-  static Future setUserSession(String answer) async =>
-      await _storage.write(key: _userSession, value: answer);
+  static Future setUserSession(String userSession) async =>
+      await _storage.write(key: _userSession, value: userSession);
 
   // Read user Session from secure storage
   static Future<String?> getUserSession() async =>
@@ -62,4 +62,33 @@ class CheckUserSession {
 
   // Delete user Session from secure storage
   static deleteUserSession() async => await _storage.delete(key: _userSession);
+}
+
+class SelectedTime {
+  static const _time = 'selectedTime';
+
+  // Set time to secure storage
+  static Future setTime(String time) async =>
+      await _storage.write(key: _time, value: time);
+
+  // Read time from secure storage
+  static Future<String?> getTime() async => await _storage.read(key: _time);
+
+  // Delete timen from secure storage
+  static deleteTime() async => await _storage.delete(key: _time);
+}
+
+class SelectedLanguage {
+  static const _language = 'selectedLanguage';
+
+  // Set time to secure storage
+  static Future setLanguage(String language) async =>
+      await _storage.write(key: _language, value: language);
+
+  // Read Language from secure storage
+  static Future<String?> getLanguage() async =>
+      await _storage.read(key: _language);
+
+  // Delete Languagen from secure storage
+  static deleteLanguage() async => await _storage.delete(key: _language);
 }
