@@ -3,6 +3,7 @@ import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import '../services/secure_storage.dart';
 import '../widgets/show_flush_bar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SecurityQuestion extends StatefulWidget {
   final String checkEvent;
@@ -81,7 +82,7 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
                 checkUserEvent != 'checkQuestionToLog'
                     ? buildTitle(
                         context,
-                        'Please set a security quesion in case you forget your password',
+                        'question_page_title'.tr(),
                       )
                     : buildTitle(
                         context,
@@ -128,9 +129,9 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
                     color: Colors.white,
                   ),
                 ),
-                const Text(
-                  'Reset Passcode',
-                  style: TextStyle(
+                Text(
+                  'reset_passcode'.tr(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -168,17 +169,17 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
                   ),
                 ),
                 checkUserEvent == "setQuestion"
-                    ? const Text(
-                        'Set Diary Lock',
-                        style: TextStyle(
+                    ? Text(
+                        'create_question_back_btn'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       )
-                    : const Text(
-                        'Change Security Question',
-                        style: TextStyle(
+                    : Text(
+                        'change_question_back_btn'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -212,10 +213,10 @@ class DropdownButtonExample extends StatefulWidget {
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
 }
 
-const List<String> list = <String>[
-  'What is your favortie color?',
-  'What is your favorite food?',
-  'What is your favorite movie?'
+List<String> list = <String>[
+  'list_question_item_1'.tr(),
+  'list_question_item_2'.tr(),
+  'list_question_item_3'.tr()
 ];
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
@@ -290,17 +291,18 @@ class _AnswerFieldState extends State<AnswerField> {
           color: Colors.white,
           fontSize: 15,
         ),
-        decoration: const InputDecoration(
-          hintText: 'Please input your answer',
-          hintStyle: TextStyle(
+        decoration: InputDecoration(
+          hintText: 'answer_field_hint_text'.tr(),
+          hintStyle: const TextStyle(
             color: Colors.grey,
             fontSize: 15,
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-          border: OutlineInputBorder(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
         ),
@@ -331,14 +333,14 @@ class _ConfirmButtonState extends State<ConfirmButton> {
         onPressed: () async {
           if (checkUserEvent == 'checkQuestionToLog') {
             if (_answer.text.isEmpty) {
-              showFlushBar(context, "Please input your answer");
+              showFlushBar(context, "flush_bar_empty_answer".tr());
             } else {
               setState(() {
                 answer = _answer.text;
               });
               if (answer != oldAnswer || dropdownValue != oldQuestion) {
                 _answer.clear();
-                showFlushBar(context, 'Wrong Question or Answer');
+                showFlushBar(context, 'flush_bar_not_match'.tr());
               } else {
                 _answer.clear();
 
@@ -349,14 +351,14 @@ class _ConfirmButtonState extends State<ConfirmButton> {
             }
           } else {
             if (_answer.text.isEmpty) {
-              showFlushBar(context, "Please input your answer");
+              showFlushBar(context, "flush_bar_empty_answer".tr());
             } else {
               if (answer == '') {
                 setState(() {
                   answer = _answer.text;
                   question = dropdownValue;
                 });
-                showFlushBar(context, 'Enter you answer again');
+                showFlushBar(context, 'flush_bar_confirm_answer'.tr());
                 _answer.clear();
               } else {
                 setState(() {
@@ -365,7 +367,7 @@ class _ConfirmButtonState extends State<ConfirmButton> {
                 if (answer != confirmAnswer || question != dropdownValue) {
                   _answer.clear();
 
-                  showFlushBar(context, 'Does not match');
+                  showFlushBar(context, 'flush_bar_not_match'.tr());
                 } else {
                   _answer.clear();
                   await QuestionSecureStorage.setSecurityQuestion(
@@ -386,7 +388,7 @@ class _ConfirmButtonState extends State<ConfirmButton> {
           }
         },
         child: Text(
-          'Confirm'.toUpperCase(),
+          'question_page_confirm_btn'.tr().toUpperCase(),
           style: const TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
