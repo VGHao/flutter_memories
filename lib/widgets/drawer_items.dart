@@ -15,9 +15,11 @@ class DrawerItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
       leading: Icon(
         icon,
-        color: Colors.blue,
       ),
       title: Text(
         title,
