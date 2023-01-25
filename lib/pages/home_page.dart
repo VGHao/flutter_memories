@@ -5,6 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import '../services/secure_storage.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/floating_action_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ChangePage extends StatefulWidget {
   static const route = '/';
@@ -98,12 +99,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: const Color(0xFFE5F5FF),
       drawer: const DrawerWidget(),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           IconButton(
             onPressed: () {},
@@ -126,17 +125,17 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('assets/images/empty-list.png'),
-                      const Text(
-                        "There is nothing here",
-                        style: TextStyle(
+                      Text(
+                        "homepage_empty_content_text".tr(),
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      const Text(
-                        "Click + button to start writing your first journey",
-                        style: TextStyle(
+                      Text(
+                        'homepage_sub_text'.tr(),
+                        style: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
