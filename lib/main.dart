@@ -19,11 +19,11 @@ void main() async {
   Hive.registerAdapter(DiaryAdapter());
   SharedPreferences.getInstance().then((pref) {
     var themeColor = pref.getString('ThemeMode');
-    if (themeColor == "Dark") {
+    if (themeColor == null) {
+      activeTheme = lightTheme;
+    } else if (themeColor == "Dark") {
       activeTheme = darkTheme;
     } else if (themeColor == "Light") {
-      activeTheme = lightTheme;
-    } else if (themeColor == "") {
       activeTheme = lightTheme;
     }
   });
