@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/models/diary.dart';
 import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
+import 'package:hive_flutter/adapters.dart';
 import '../services/secure_storage.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/floating_action_widget.dart';
@@ -115,27 +117,48 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/empty-list.png'),
-                const Text(
-                  "There is nothing here",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+          ValueListenableBuilder(
+            valueListenable: Hive.box('diaries').listenable(),
+            builder: (context, box, _) {
+              if (box.values.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/empty-list.png'),
+                      const Text(
+                        "There is nothing here",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      const Text(
+                        "Click + button to start writing your first journey",
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 5.0),
-                const Text(
-                  "Click + button to start writing your first journey",
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
+                );
+              }
+              return ListView.builder(
+                itemCount: box.values.length,
+                itemBuilder: (context, index) {
+                  Diary? currentDiary = box.getAt(index);
+                  return Column(
+                    children: [
+                      Text("datetime: ${currentDiary?.date.toString()}"),
+                      Text("mood: ${currentDiary?.mood.toString()}"),
+                      Text("content: ${currentDiary?.contentPlainText}"),
+                      Text("imgList: ${currentDiary?.imgPaths.toString()}"),
+                    ],
+                  );
+                },
+              );
+            },
           ),
           const FloatingButtonWidget(),
         ],
