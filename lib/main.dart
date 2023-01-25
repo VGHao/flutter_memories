@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import 'package:flutter_memories_dailyjournal/pages/setting_page.dart';
+import 'package:hive/hive.dart';
+import 'models/diary.dart';
 import 'pages/home_page.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter(DiaryAdapter());
   runApp(const MyApp());
 }
 
@@ -24,10 +31,29 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) => ChangePage(),
-        'setting-page': (context) => SettingPage(),
-        'set-lock': (context) => SetDiaryLock(),
+        '/': (context) => FutureBuilder(
+              future: Hive.openBox('diaries'),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return const ChangePage();
+                  }
+                } else {
+                  return const Scaffold();
+                }
+              },
+            ),
+        'setting-page': (context) => const SettingPage(),
+        'set-lock': (context) => const SetDiaryLock(),
       },
     );
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
   }
 }

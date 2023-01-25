@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/widgets/show_flush_bar.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'dart:async';
 
 import 'package:path_provider/path_provider.dart';
+
+import '../models/diary.dart';
 
 class CreateDiary extends StatefulWidget {
   const CreateDiary({super.key});
@@ -106,6 +112,11 @@ class _CreateDiaryState extends State<CreateDiary> {
     }
   }
 
+  void addDiary(Diary diary) {
+    final diariesBox = Hive.box('diaries');
+    diariesBox.add(diary);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -149,6 +160,22 @@ class _CreateDiaryState extends State<CreateDiary> {
             IconButton(
               onPressed: () {
                 //Save data to Database
+                if (selectedMood == null) {
+                  showFlushBar(context, "Select a mood");
+                } else {
+                  String contentJson =
+                      jsonEncode(_controller.document.toDelta().toJson());
+                  String contentPlainText = _controller.document.toPlainText();
+                  final newDiary = Diary(
+                    date: selectedDate,
+                    mood: selectedMood!,
+                    contentPlainText: contentPlainText,
+                    contentJson: contentJson,
+                    imgPaths: _imagesPathList,
+                  );
+                  addDiary(newDiary);
+                  Navigator.of(context).pop();
+                }
               },
               icon: const Icon(Icons.check, color: Colors.blue),
             ),
