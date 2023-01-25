@@ -23,6 +23,8 @@ void main() async {
       activeTheme = darkTheme;
     } else if (themeColor == "Light") {
       activeTheme = lightTheme;
+    } else if (themeColor == "") {
+      activeTheme = lightTheme;
     }
   });
   runApp(EasyLocalization(
