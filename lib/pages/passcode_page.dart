@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/security_question.dart';
 import '../services/secure_storage.dart';
 import '../widgets/show_flush_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PasscodePage extends StatefulWidget {
   final String checked;
@@ -137,9 +138,9 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             ),
           );
         },
-        child: const Text(
-          'Reset Passcode',
-          style: TextStyle(
+        child: Text(
+          'reset_passcode'.tr(),
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),
@@ -176,7 +177,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
   buildSecurityText() {
     return checkUserEvent == 'checkToLog' || checkUserEvent == 'checkToTurnOff'
         ? Text(
-            "Enter your passcode".toUpperCase(),
+            "passcode_check_log".tr().toUpperCase(),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -186,7 +187,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         : checkUserEvent == "noPin"
             ? firstPin == ""
                 ? Text(
-                    "enter your new pin".toUpperCase(),
+                    "passcode_enter_new_pin".tr().toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -194,7 +195,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                     ),
                   )
                 : Text(
-                    "Confirm your pin".toUpperCase(),
+                    "passcode_confirm_pin".tr().toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -203,7 +204,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                   )
             : securePin != oldPin
                 ? Text(
-                    "Enter your old Pin".toUpperCase(),
+                    "passcode_enter_old_pin".tr().toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -212,7 +213,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                   )
                 : firstPin == ""
                     ? Text(
-                        "Enter your new Pin".toUpperCase(),
+                        "passcode_enter_new_pin".tr().toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -220,7 +221,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                         ),
                       )
                     : Text(
-                        "Confirm your new pin".toUpperCase(),
+                        "passcode_confirm_pin".tr().toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -363,7 +364,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         });
         showFlushBar(
           context,
-          'Input your Pin again',
+          'flush_bar_input_again'.tr(),
         );
         clearPinField();
       }
@@ -374,7 +375,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         if (firstPin != confirmPin) {
           showFlushBar(
             context,
-            'Pin does not match',
+            'flush_bar_not_match'.tr(),
           );
           clearPinField();
         }
@@ -403,14 +404,14 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           // ignore: use_build_context_synchronously
           showFlushBar(
             context,
-            'Pin does not match',
+            'flush_bar_not_match'.tr(),
           );
           clearPinField();
         } else {
           // ignore: use_build_context_synchronously
           showFlushBar(
             context,
-            'Enter your new pin',
+            'flush_bar_enter_new_pin'.tr(),
           );
           clearPinField();
           setState(() {
@@ -425,7 +426,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           // ignore: use_build_context_synchronously
           showFlushBar(
             context,
-            'Enter your Pin again',
+            'flush_bar_input_again'.tr(),
           );
           clearPinField();
         }
@@ -437,7 +438,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             // ignore: use_build_context_synchronously
             showFlushBar(
               context,
-              'Pin does not match',
+              'flush_bar_not_match'.tr(),
             );
             clearPinField();
           }
@@ -449,7 +450,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             // ignore: use_build_context_synchronously
             showFlushBar(
               context,
-              'Change successfully',
+              'flush_bar_change_success'.tr(),
             );
           }
         }
@@ -466,7 +467,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         if (firstPin != securePin) {
           showFlushBar(
             context,
-            'Wrong Pin',
+            'flush_bar_wrong_pin'.tr(),
           );
           clearPinField();
         } else {
@@ -487,7 +488,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         if (firstPin != securePin) {
           showFlushBar(
             context,
-            'Wrong Pin',
+            'flush_bar_wrong_pin'.tr(),
           );
           clearPinField();
         } else {
