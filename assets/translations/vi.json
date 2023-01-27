@@ -60,5 +60,6 @@
     "set_lock_set_passcode_title": "Cài đặt mật khẩu",
     "set_lock_set_passcode_sub_title": "Cài đặt hoặc thay đổi mật khẩu",
     "set_lock_set_question_title": "Cài đặt câu hỏi bảo mật",
-    "set_lock_set_question_sub_title": "Dùng trong trường hợp bạn quên mật khẩu"
+    "set_lock_set_question_sub_title": "Dùng trong trường hợp bạn quên mật khẩu",
+    "clock_helper_text": "Chọn thời gian"
 }
