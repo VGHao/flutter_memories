@@ -241,6 +241,12 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
         hour: int.parse(selectedTime.split(":")[0]),
         minute: int.parse(selectedTime.split(":")[1]),
       ),
+      builder: (context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
     );
     if (time != null) {
       setState(() {
