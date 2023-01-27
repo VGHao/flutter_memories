@@ -18,12 +18,12 @@ void main() async {
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(DiaryAdapter());
   SharedPreferences.getInstance().then((pref) {
-    var themeColor = pref.getString('ThemeMode');
+    var themeColor = pref.getInt('ThemeMode');
     if (themeColor == null) {
       activeTheme = lightTheme;
-    } else if (themeColor == "1") {
+    } else if (themeColor == 1) {
       activeTheme = darkTheme;
-    } else if (themeColor == "0") {
+    } else if (themeColor == 0) {
       activeTheme = lightTheme;
     }
   });
