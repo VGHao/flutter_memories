@@ -221,12 +221,14 @@ class _HomePageState extends State<HomePage> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: currentDiary.contentPlainText.isEmpty
-                                ? const Text(
-                                    "You didn't write anything this day",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontStyle: FontStyle.italic),
-                                  )
+                                ? currentDiary.imgPaths.isNotEmpty
+                                    ? Container()
+                                    : const Text(
+                                        "You didn't write anything this day",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontStyle: FontStyle.italic),
+                                      )
                                 : Text(
                                     currentDiary.contentPlainText,
                                     maxLines: 3,
