@@ -29,6 +29,7 @@ dependencies:
   provider: any
   shared_preferences: any
   group_radio_button: any
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/icon_launcher/
+    - assets/images/slider/
     - assets/translations/
 
   # To add custom fonts to your application, add a fonts section here,
