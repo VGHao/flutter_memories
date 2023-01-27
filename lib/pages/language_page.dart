@@ -9,27 +9,27 @@ class LanguagePage extends StatefulWidget {
   State<LanguagePage> createState() => _LanguagePageState();
 }
 
-List listLanguage = [
-  {
-    'id': 0,
-    'title': 'English',
-    'isSelected': true,
-    'language_name': 'en_US',
-    'language': 'en',
-    'country': 'US',
-  },
-  {
-    'id': 1,
-    'title': 'Việt Nam',
-    'isSelected': false,
-    'language_name': 'vi',
-    'language': 'vi',
-    'country': '',
-  },
-];
-
 class _LanguagePageState extends State<LanguagePage> {
   String currentLanguage = "en_US";
+
+  List listLanguage = [
+    {
+      'id': 0,
+      'title': 'English',
+      'isSelected': true,
+      'language_name': 'en_US',
+      'language': 'en',
+      'country': 'US',
+    },
+    {
+      'id': 1,
+      'title': 'Việt Nam',
+      'isSelected': false,
+      'language_name': 'vi',
+      'language': 'vi',
+      'country': '',
+    },
+  ];
   @override
   void initState() {
     super.initState();
@@ -39,6 +39,7 @@ class _LanguagePageState extends State<LanguagePage> {
 
   Future init() async {
     String language = await SelectedLanguage.getLanguage() ?? '';
+
     setState(() {
       currentLanguage = language;
     });
@@ -78,8 +79,6 @@ class _LanguagePageState extends State<LanguagePage> {
                   controlAffinity: ListTileControlAffinity.trailing,
                   contentPadding: const EdgeInsets.only(left: 16, right: 12),
                   dense: true,
-                  // checkColor: Colors.green,
-                  // activeColor: Colors.white,
                   side: MaterialStateBorderSide.resolveWith(
                       (Set<MaterialState> states) {
                     if (states.contains(MaterialState.selected)) {
