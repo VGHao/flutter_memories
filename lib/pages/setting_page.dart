@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/change_theme.dart';
 import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
 import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../services/secure_storage.dart';
 import 'passcode_page.dart';
@@ -16,6 +17,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String securePin = "";
+
   @override
   void initState() {
     super.initState();
@@ -216,6 +218,7 @@ bool active = true;
 
 class _RemindTimeTileState extends State<RemindTimeTile> {
   String selectedTime = "00:00";
+  String checkNotification = "true";
 
   @override
   void initState() {
@@ -227,16 +230,37 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
 
   Future init() async {
     String time = await SelectedTime.getTime() ?? "00:00";
+    String check =
+        await CheckScheduledNotification.getCheckNotificationActivate() ?? "";
 
     setState(() {
       selectedTime = time;
-      print(selectedTime);
+      checkNotification = check;
+      if (check == 'true') {
+        active = true;
+      } else {
+        active = false;
+      }
     });
   }
 
+  void callScheduledNotification() {
+    NotificationApi.showScheduledNotification(
+      title: 'Memories - Daily Journal',
+      body: 'Time to write your new diary',
+      payload: 'diary',
+      hour: int.parse(selectedTime.split(":")[0]),
+      minute: int.parse(selectedTime.split(":")[1]),
+    );
+  }
+
   Future<void> displayTimeDialog() async {
+    String check =
+        await CheckScheduledNotification.getCheckNotificationActivate() ?? "";
+
     final TimeOfDay? time = await showTimePicker(
       context: context,
+      helpText: "clock_helper_text".tr(),
       initialTime: TimeOfDay(
         hour: int.parse(selectedTime.split(":")[0]),
         minute: int.parse(selectedTime.split(":")[1]),
@@ -250,9 +274,21 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
     );
     if (time != null) {
       setState(() {
-        selectedTime = time.format(context);
+        selectedTime = MaterialLocalizations.of(context)
+            .formatTimeOfDay(time, alwaysUse24HourFormat: true)
+            .toString();
         SelectedTime.setTime(selectedTime);
+        print(selectedTime);
       });
+      if (active == true) {
+        print(check);
+        if (check == "true") {
+          print(check);
+          callScheduledNotification();
+        }
+      } else {
+        print(check);
+      }
     }
   }
 
@@ -286,26 +322,25 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
         ),
         subtitle: Text(
           selectedTime != "" ? selectedTime : '00:00',
-          style: const TextStyle(fontSize: 13, color: Colors.grey),
+          style: const TextStyle(
+            fontSize: 13,
+            color: Colors.grey,
+          ),
         ),
         trailing: Switch(
           value: active,
-          onChanged: (bool value) {
+          onChanged: (bool value) async {
             setState(
               () {
                 active = value;
               },
             );
             if (active == true) {
-              NotificationApi.showScheduledNotification(
-                title: 'Memories - Daily Journal',
-                body: 'Time to write your new diary',
-                payload: 'diary',
-                scheduledDate: DateTime.now(),
-              );
-              print("now: ${DateTime.now()}");
+              CheckScheduledNotification.setCheckNotificationActivate('true');
+              callScheduledNotification();
             } else {
-              print('turn off');
+              CheckScheduledNotification.setCheckNotificationActivate('false');
+              FlutterLocalNotificationsPlugin().cancelAll();
             }
           },
         ),
