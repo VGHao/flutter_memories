@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/models/diary.dart';
 import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
 import 'package:hive_flutter/adapters.dart';
+import '../constants.dart';
 import '../services/secure_storage.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/floating_action_widget.dart';
@@ -102,7 +105,6 @@ class _HomePageState extends State<HomePage> {
       drawer: const DrawerWidget(),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             onPressed: () {},
@@ -147,20 +149,169 @@ class _HomePageState extends State<HomePage> {
                 itemCount: box.values.length,
                 itemBuilder: (context, index) {
                   Diary? currentDiary = box.getAt(index);
-                  return Column(
-                    children: [
-                      Text("datetime: ${currentDiary?.date.toString()}"),
-                      Text("mood: ${currentDiary?.mood.toString()}"),
-                      Text("content: ${currentDiary?.contentPlainText}"),
-                      Text("imgList: ${currentDiary?.imgPaths.toString()}"),
-                    ],
-                  );
+                  if (index == box.values.length - 1) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: diaryItem(currentDiary),
+                    );
+                  }
+                  return diaryItem(currentDiary);
                 },
               );
             },
           ),
           const FloatingButtonWidget(),
         ],
+      ),
+    );
+  }
+
+  Widget diaryItem(Diary? currentDiary) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: DateFormat('d ').format(currentDiary!.date).toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                children: [
+                  TextSpan(
+                    text:
+                        DateFormat('MMM').format(currentDiary.date).toString(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      moodIconList[currentDiary.mood],
+                      height: 32,
+                    ),
+                    const VerticalDivider(
+                      width: 30,
+                      thickness: 1.0,
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: currentDiary.contentPlainText.isEmpty
+                                ? const Text(
+                                    "You didn't write anything this day",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontStyle: FontStyle.italic),
+                                  )
+                                : Text(
+                                    currentDiary.contentPlainText,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                          ),
+                          const SizedBox(height: 10),
+                          currentDiary.imgPaths.isNotEmpty
+                              ? SizedBox(
+                                  height: 100,
+                                  child: GridView.count(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 5.0,
+                                    children: [
+                                      ...List<Widget>.generate(
+                                        currentDiary.imgPaths.length <= 3
+                                            ? currentDiary.imgPaths.length
+                                            : 3,
+                                        (int index) => currentDiary
+                                                    .imgPaths.length >
+                                                3
+                                            ? index < 2
+                                                ? _imgWidget(
+                                                    currentDiary, index)
+                                                : Stack(
+                                                    children: [
+                                                      _imgWidget(
+                                                          currentDiary, index),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          color: Colors.black
+                                                              .withOpacity(0.5),
+                                                        ),
+                                                      ),
+                                                      const Center(
+                                                        child: Icon(
+                                                          Icons
+                                                              .more_horiz_rounded,
+                                                          color: Colors.white,
+                                                          size: 30.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                            : _imgWidget(currentDiary, index),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _imgWidget(Diary currentDiary, int index) {
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Image.file(
+          File(currentDiary.imgPaths[index]),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

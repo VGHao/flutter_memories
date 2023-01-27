@@ -13,6 +13,7 @@ import 'dart:async';
 
 import 'package:path_provider/path_provider.dart';
 
+import '../constants.dart';
 import '../models/diary.dart';
 
 class CreateDiary extends StatefulWidget {
@@ -31,21 +32,6 @@ class _CreateDiaryState extends State<CreateDiary> {
   int? selectedMood = 2;
   final ImagePicker _picker = ImagePicker();
   List<String> _imagesPathList = [];
-
-  List<String> moodIconList = [
-    'assets/images/mood_cry.png',
-    'assets/images/mood_sad.png',
-    'assets/images/mood_neutral.png',
-    'assets/images/mood_happy.png',
-    'assets/images/mood_excited.png',
-  ];
-  List<String> moodList = [
-    'heartbroken',
-    'unhappy',
-    'neutral',
-    'happy',
-    'delighted',
-  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -165,7 +151,8 @@ class _CreateDiaryState extends State<CreateDiary> {
                 } else {
                   String contentJson =
                       jsonEncode(_controller.document.toDelta().toJson());
-                  String contentPlainText = _controller.document.toPlainText();
+                  String contentPlainText =
+                      _controller.document.toPlainText().trim();
                   final newDiary = Diary(
                     date: selectedDate,
                     mood: selectedMood!,
