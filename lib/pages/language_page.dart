@@ -13,7 +13,7 @@ List listLanguage = [
   {
     'id': 0,
     'title': 'English',
-    'isSelected': false,
+    'isSelected': true,
     'language_name': 'en_US',
     'language': 'en',
     'country': 'US',
