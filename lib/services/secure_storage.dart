@@ -74,14 +74,14 @@ class SelectedTime {
   // Read time from secure storage
   static Future<String?> getTime() async => await _storage.read(key: _time);
 
-  // Delete timen from secure storage
+  // Delete time from secure storage
   static deleteTime() async => await _storage.delete(key: _time);
 }
 
 class SelectedLanguage {
   static const _language = 'selectedLanguage';
 
-  // Set time to secure storage
+  // Set Language to secure storage
   static Future setLanguage(String language) async =>
       await _storage.write(key: _language, value: language);
 
@@ -89,6 +89,24 @@ class SelectedLanguage {
   static Future<String?> getLanguage() async =>
       await _storage.read(key: _language);
 
-  // Delete Languagen from secure storage
+  // Delete Language from secure storage
   static deleteLanguage() async => await _storage.delete(key: _language);
+}
+
+class CheckScheduledNotification {
+  static const _checkNotificationActivate = 'check';
+
+  // Set time to secure storage
+  static Future setCheckNotificationActivate(
+          String checkNotificationActivate) async =>
+      await _storage.write(
+          key: _checkNotificationActivate, value: checkNotificationActivate);
+
+  // Read CheckNotificationActivate from secure storage
+  static Future<String?> getCheckNotificationActivate() async =>
+      await _storage.read(key: _checkNotificationActivate);
+
+  // Delete CheckNotificationActivate from secure storage
+  static deleteCheckNotificationActivate() async =>
+      await _storage.delete(key: _checkNotificationActivate);
 }
