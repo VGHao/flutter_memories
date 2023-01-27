@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/theme/theme.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -13,7 +12,7 @@ class ChangeTheme extends StatefulWidget {
   ChangeThemeState createState() => ChangeThemeState();
 }
 
-String _selectedTheme = '0';
+int _selectedTheme = 0;
 
 final List<String> imgList = [
   'assets/images/slider/light-theme.jpg',
@@ -21,14 +20,14 @@ final List<String> imgList = [
 ];
 
 class ChangeThemeState extends State<ChangeTheme> {
-  void onThemeChange(String value, ThemeNotifier themeNotifier) async {
-    if (value == "1") {
+  void onThemeChange(int value, ThemeNotifier themeNotifier) async {
+    if (value == 1) {
       themeNotifier.setTheme(darkTheme);
-    } else if (value == "0") {
+    } else if (value == 0) {
       themeNotifier.setTheme(lightTheme);
     }
     final pref = await SharedPreferences.getInstance();
-    pref.setString("ThemeMode", value);
+    pref.setInt("ThemeMode", value);
   }
 
   @override
@@ -38,6 +37,12 @@ class ChangeThemeState extends State<ChangeTheme> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change Theme"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'setting-page');
+          },
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -59,10 +64,10 @@ class ChangeThemeState extends State<ChangeTheme> {
                   aspectRatio: 1.0,
                   viewportFraction: 0.75,
                   enlargeCenterPage: true,
-                  initialPage: int.parse(_selectedTheme),
+                  initialPage: _selectedTheme,
                   onPageChanged: (index, reason) {
                     setState(() {
-                      _selectedTheme = index.toString();
+                      _selectedTheme = index;
                     });
                   },
                 ),
