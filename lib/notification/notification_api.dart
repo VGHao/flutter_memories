@@ -2,7 +2,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-import '../services/secure_storage.dart';
 
 class NotificationApi {
   static final _notifications = FlutterLocalNotificationsPlugin();
@@ -58,22 +57,14 @@ class NotificationApi {
     String? title,
     String? body,
     String? payload,
-    required DateTime scheduledDate,
+    required int hour,
+    required int minute,
   }) async =>
       _notifications.zonedSchedule(
         id,
         title,
         body,
-        // _scheduleDaily(Time(
-        //     int.parse((await SelectedTime.getTime() ?? "00:00")
-        //         .toString()
-        //         .split(":")[0]),
-        //     int.parse((await SelectedTime.getTime() ?? "00:00")
-        //         .toString()
-        //     //     .split(":")[1]),
-        //     )),
-        _scheduleDaily(Time(6)),
-        // tz.TZDateTime.from(scheduledDate, tz.local),
+        _scheduleDaily(hour, minute),
         await _notificationDetails(),
         payload: payload,
         androidAllowWhileIdle: true,
@@ -82,18 +73,18 @@ class NotificationApi {
         matchDateTimeComponents: DateTimeComponents.time,
       );
 
-  static tz.TZDateTime _scheduleDaily(Time time) {
+  static tz.TZDateTime _scheduleDaily(int hour, int minute) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
-      now.day + 1,
-      time.hour,
-      time.minute,
-      time.second,
+      now.day,
+      hour - 7,
+      minute,
     );
-    print(scheduledDate);
+    print('now ${now}');
+    print('scheduled ${scheduledDate}');
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
