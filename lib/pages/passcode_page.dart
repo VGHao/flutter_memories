@@ -368,6 +368,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         );
         clearPinField();
       }
+
       if (pinIndex == 4 && firstPin != '') {
         setState(() {
           confirmPin = strPin;
@@ -378,8 +379,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             'flush_bar_not_match'.tr(),
           );
           clearPinField();
-        }
-        if (firstPin == confirmPin) {
+        } else {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -419,6 +419,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           });
         }
       } else {
+        // Input first passcode
         if (pinIndex == 4 && firstPin == "") {
           setState(() {
             firstPin = strPin;
@@ -430,10 +431,15 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           );
           clearPinField();
         }
+
+        // After input first passcode
         if (pinIndex == 4 && firstPin != '') {
           setState(() {
             confirmPin = strPin;
           });
+
+          // Compare first input passcode with confirm passcode
+          // If wrong input confirm passcode again
           if (firstPin != confirmPin) {
             // ignore: use_build_context_synchronously
             showFlushBar(
@@ -442,6 +448,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             );
             clearPinField();
           }
+
           if (firstPin == confirmPin) {
             // Set Pin Number to secure storage
             await PinSecureStorage.setPinNumber(confirmPin);
