@@ -29,13 +29,9 @@ class _SetDiaryLockState extends State<SetDiaryLock> {
       pin = getPin;
     });
     if (pin != "") {
-      setState(() {
-        active = true;
-      });
+      active = true;
     } else {
-      setState(() {
-        active = false;
-      });
+      active = false;
     }
   }
 
