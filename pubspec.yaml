@@ -28,8 +28,9 @@ dependencies:
   easy_localization: ^3.0.1
   provider: any
   shared_preferences: any
-  group_radio_button: any
   carousel_slider: ^4.2.1
+  flutter_native_timezone: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
