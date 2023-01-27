@@ -34,6 +34,11 @@ final darkTheme = ThemeData(
     checkColor: MaterialStateProperty.all(Colors.white),
     fillColor: MaterialStateProperty.all(const Color(0xFF003367)),
   ),
+  timePickerTheme: const TimePickerThemeData(
+    backgroundColor: Color(0xFF001a38),
+    dialTextColor: Colors.white,
+    hourMinuteColor: Color(0xFF003367),
+  ),
 );
 final lightTheme = ThemeData(
   brightness: Brightness.light,
