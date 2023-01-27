@@ -45,7 +45,6 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
       oldAnswer = secureAnwser;
       oldQuestion = secureQuestion;
       checkUserEvent = widget.checkEvent;
-      print(checkUserEvent);
     });
   }
 
