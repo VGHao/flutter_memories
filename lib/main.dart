@@ -21,9 +21,9 @@ void main() async {
     var themeColor = pref.getString('ThemeMode');
     if (themeColor == null) {
       activeTheme = lightTheme;
-    } else if (themeColor == "Dark") {
+    } else if (themeColor == "1") {
       activeTheme = darkTheme;
-    } else if (themeColor == "Light") {
+    } else if (themeColor == "0") {
       activeTheme = lightTheme;
     }
   });
