@@ -3,7 +3,7 @@ import 'package:flutter_memories_dailyjournal/theme/theme.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/theme_manager.dart';
 
 class ChangeTheme extends StatefulWidget {
@@ -13,14 +13,18 @@ class ChangeTheme extends StatefulWidget {
   ChangeThemeState createState() => ChangeThemeState();
 }
 
-class ChangeThemeState extends State<ChangeTheme> {
-  String _selectedColor = "Light";
-  final List<String> _color = ["Dark", "Light"];
+String _selectedTheme = '0';
 
+final List<String> imgList = [
+  'assets/images/slider/light-theme.jpg',
+  'assets/images/slider/dark-theme.jpg'
+];
+
+class ChangeThemeState extends State<ChangeTheme> {
   void onThemeChange(String value, ThemeNotifier themeNotifier) async {
-    if (value == "Dark") {
+    if (value == "1") {
       themeNotifier.setTheme(darkTheme);
-    } else if (value == "Light") {
+    } else if (value == "0") {
       themeNotifier.setTheme(lightTheme);
     }
     final pref = await SharedPreferences.getInstance();
@@ -33,61 +37,68 @@ class ChangeThemeState extends State<ChangeTheme> {
     themeNotifier.getTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Theme App"),
+        title: const Text("Change Theme"),
       ),
-      // backgroundColor: Colors.green,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(
+              'assets/images/passcode-img.png',
+            ),
+          ),
         ),
-      ),
-      floatingActionButton: Theme(
-        data: Theme.of(context).copyWith(splashColor: Colors.blue), // For Test
-        child: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            themeChangeDialog(themeNotifier);
-          },
+        child: Container(
+          margin: const EdgeInsets.only(top: 16),
+          child: Column(
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  autoPlay: false,
+                  aspectRatio: 1.0,
+                  viewportFraction: 0.75,
+                  enlargeCenterPage: true,
+                  initialPage: int.parse(_selectedTheme),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _selectedTheme = index.toString();
+                    });
+                  },
+                ),
+                items: imgList
+                    .map((item) => ClipRRect(
+                            child: Stack(
+                          children: <Widget>[
+                            Image.asset(
+                              item,
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              fit: BoxFit.fill,
+                            )
+                          ],
+                        )))
+                    .toList(),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 24),
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 55,
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  onPressed: () {
+                    onThemeChange(_selectedTheme, themeNotifier);
+                  },
+                  child: Text('Use it'.toUpperCase()),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  themeChangeDialog(ThemeNotifier themeNotifier) {
-    showDialog(
-        context: context,
-        builder: (_) => StatefulBuilder(builder: (context, setState) {
-              return AlertDialog(
-                content: SizedBox(
-                  height: 250,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      RadioGroup<String>.builder(
-                        groupValue: _selectedColor,
-                        onChanged: ((val) {
-                          setState(() {
-                            _selectedColor = val!;
-                          });
-                          onThemeChange(_selectedColor, themeNotifier);
-
-                        }),
-                        items: _color,
-                        itemBuilder: (item) => RadioButtonBuilder(item),
-                      )
-                    ],
-                  ),
-                ),
-                actions: [
-                  MaterialButton(
-                      child: const Text("Close"),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      })
-                ],
-              );
-            }));
   }
 }
