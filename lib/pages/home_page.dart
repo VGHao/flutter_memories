@@ -237,58 +237,30 @@ class _HomePageState extends State<HomePage> {
                                   ),
                           ),
                           const SizedBox(height: 10),
-                          currentDiary.imgPaths.isNotEmpty
-                              ? SizedBox(
-                                  height: 100,
-                                  child: GridView.count(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 5.0,
-                                    children: [
-                                      ...List<Widget>.generate(
-                                        currentDiary.imgPaths.length <= 3
-                                            ? currentDiary.imgPaths.length
-                                            : 3,
-                                        (int index) => currentDiary
-                                                    .imgPaths.length >
-                                                3
-                                            ? index < 2
-                                                ? _imgWidget(
-                                                    currentDiary, index)
-                                                : Stack(
-                                                    children: [
-                                                      _imgWidget(
-                                                          currentDiary, index),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: double.infinity,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          color: Colors.black
-                                                              .withOpacity(0.5),
-                                                        ),
-                                                      ),
-                                                      const Center(
-                                                        child: Icon(
-                                                          Icons
-                                                              .more_horiz_rounded,
-                                                          color: Colors.white,
-                                                          size: 30.0,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                            : _imgWidget(currentDiary, index),
-                                      ),
-                                    ],
+                          if (currentDiary.imgPaths.isNotEmpty)
+                            SizedBox(
+                              height: 100,
+                              child: GridView.count(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 5.0,
+                                children: [
+                                  ...List<Widget>.generate(
+                                    currentDiary.imgPaths.length <= 3
+                                        ? currentDiary.imgPaths.length
+                                        : 3,
+                                    (int index) => currentDiary
+                                                .imgPaths.length >
+                                            3
+                                        ? handleMultipleImg(index, currentDiary)
+                                        : _imgWidget(currentDiary, index),
                                   ),
-                                )
-                              : const SizedBox(),
+                                ],
+                              ),
+                            )
+                          else
+                            const SizedBox(),
                         ],
                       ),
                     ),
@@ -300,6 +272,33 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget handleMultipleImg(int index, Diary currentDiary) {
+    if (index < 2) {
+      return _imgWidget(currentDiary, index);
+    } else {
+      return Stack(
+        children: [
+          _imgWidget(currentDiary, index),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.black.withOpacity(0.5),
+            ),
+          ),
+          const Center(
+            child: Icon(
+              Icons.more_horiz_rounded,
+              color: Colors.white,
+              size: 30.0,
+            ),
+          ),
+        ],
+      );
+    }
   }
 
   Widget _imgWidget(Diary currentDiary, int index) {
