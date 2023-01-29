@@ -32,7 +32,6 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   easy_image_viewer: ^1.2.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

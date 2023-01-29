@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/models/diary.dart';
 import 'package:flutter_memories_dailyjournal/pages/passcode_page.dart';
@@ -100,6 +99,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isReversed = true;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -114,9 +114,49 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {},
               icon: const Icon(Icons.search),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.swap_vert_rounded),
+            PopupMenuButton(
+              icon: const Icon(Icons.sort_rounded),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Row(
+                      children: [
+                        const Text("Latest First"),
+                        const Spacer(),
+                        Visibility(
+                          visible: isReversed,
+                          child: const Icon(Icons.check),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: Row(
+                      children: [
+                        const Text("Oldest First"),
+                        const Spacer(),
+                        Visibility(
+                          visible: !isReversed,
+                          child: const Icon(Icons.check),
+                        ),
+                      ],
+                    ),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == 0) {
+                  setState(() {
+                    isReversed = true;
+                  });
+                } else {
+                  setState(() {
+                    isReversed = false;
+                  });
+                }
+              },
             ),
           ],
         ),
@@ -125,7 +165,13 @@ class _HomePageState extends State<HomePage> {
             ValueListenableBuilder(
               valueListenable: Hive.box('diaries').listenable(),
               builder: (context, box, _) {
-                if (box.values.isEmpty) {
+                List originalData = box.values.toList();
+                List showData = box.values.toList();
+                showData.sort((a, b) => isReversed
+                    ? b.date.compareTo(a.date)
+                    : a.date.compareTo(b.date));
+
+                if (showData.isEmpty) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,16 +196,22 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
                 return ListView.builder(
-                  itemCount: box.values.length,
+                  itemCount: showData.length,
                   itemBuilder: (context, index) {
-                    Diary? currentDiary = box.getAt(index);
-                    if (index == box.values.length - 1) {
+                    Diary? currentDiary = showData[index];
+                    if (index == showData.length - 1) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 100),
-                        child: diaryItem(index, currentDiary),
+                        child: diaryItem(
+                          index: originalData.indexOf(currentDiary),
+                          currentDiary: currentDiary,
+                        ),
                       );
                     }
-                    return diaryItem(index, currentDiary);
+                    return diaryItem(
+                      index: originalData.indexOf(currentDiary),
+                      currentDiary: currentDiary,
+                    );
                   },
                 );
               },
@@ -171,7 +223,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget diaryItem(int index, Diary? currentDiary) {
+  Widget diaryItem({required int index, required Diary? currentDiary}) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
