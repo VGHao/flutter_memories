@@ -30,6 +30,7 @@ dependencies:
   shared_preferences: any
   carousel_slider: ^4.2.1
   flutter_native_timezone: ^2.0.0
+  easy_image_viewer: ^1.2.0
 
 
 dev_dependencies:

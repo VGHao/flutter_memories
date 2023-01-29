@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/widgets/show_flush_bar.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
@@ -10,28 +10,45 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'dart:async';
-
 import 'package:path_provider/path_provider.dart';
 
 import '../constants.dart';
 import '../models/diary.dart';
 
-class CreateDiary extends StatefulWidget {
-  const CreateDiary({super.key});
+class EditDiary extends StatefulWidget {
+  final int diaryId;
+  final Diary currentDiary;
+
+  const EditDiary(
+      {super.key, required this.diaryId, required this.currentDiary});
 
   @override
-  State<CreateDiary> createState() => _CreateDiaryState();
+  State<EditDiary> createState() => _EditDiaryState();
 }
 
-class _CreateDiaryState extends State<CreateDiary> {
+class _EditDiaryState extends State<EditDiary> {
   final quill.QuillController _controller = quill.QuillController.basic();
   final FocusNode _focusNode = FocusNode();
   bool isFocus = false;
-  DateTime selectedDate = DateTime.now();
+  late DateTime selectedDate;
   DateTime now = DateTime.now();
-  int? selectedMood = 2;
+  late int? selectedMood;
   final ImagePicker _picker = ImagePicker();
-  List<String> _imagesPathList = [];
+  late List<String> _imagesPathList;
+  late List<String> tempImgList = [];
+  List<String> tempDeleteImgList = [];
+  bool isEditing = false;
+  var diariesBox = Hive.box('diaries');
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = widget.currentDiary.date;
+    selectedMood = widget.currentDiary.mood;
+    _imagesPathList = List.from(widget.currentDiary.imgPaths);
+    _controller.document =
+        quill.Document.fromJson(jsonDecode(widget.currentDiary.contentJson));
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -57,21 +74,48 @@ class _CreateDiaryState extends State<CreateDiary> {
       textOK: const Text('OK'),
       textCancel: const Text('CANCEL'),
     )) {
-      deleteImgList();
+      handleDeleteImg("cancel");
       return Navigator.of(context).pop();
     }
     return;
   }
 
-  Future<void> deleteImgList() async {
-    try {
-      for (String path in _imagesPathList) {
-        await File(path).delete();
-        _imagesPathList.remove(path);
-      }
-    } catch (e) {
+  Future<void> cancelEditConfirm(BuildContext context) async {
+    if (await confirm(
+      context,
+      title: const Text('Exiting Edit Mode'),
+      content: const Text(
+          "Your changes haven't been saved. \nDo you want to discard the changes?"),
+      textOK: const Text('OK'),
+      textCancel: const Text('CANCEL'),
+    )) {
+      handleDeleteImg("cancel");
+      setState(() {
+        selectedDate = widget.currentDiary.date;
+        selectedMood = widget.currentDiary.mood;
+        _imagesPathList = List.from(widget.currentDiary.imgPaths);
+        _controller.document = quill.Document.fromJson(
+            jsonDecode(widget.currentDiary.contentJson));
+        isEditing = false;
+      });
       return;
     }
+    return;
+  }
+
+  Future<void> _deleteConfirm(BuildContext context) async {
+    if (await confirm(
+      context,
+      title: const Text('Delete This Diary'),
+      content: const Text("Are you sure you want to delete this diary?"),
+      textOK: const Text('OK'),
+      textCancel: const Text('CANCEL'),
+    )) {
+      deleteAllImg();
+      diariesBox.deleteAt(widget.diaryId);
+      return Navigator.of(context).pop();
+    }
+    return;
   }
 
   Future<void> selectImages() async {
@@ -80,7 +124,7 @@ class _CreateDiaryState extends State<CreateDiary> {
       if (pickedImages.isNotEmpty) {
         await copyImagesToDir(pickedImages);
       }
-      print(_imagesPathList.toString());
+      // print(tempImgList.toString());
       setState(() {});
     } catch (e) {
       print(e);
@@ -97,12 +141,14 @@ class _CreateDiaryState extends State<CreateDiary> {
       File newImage = await originalImg.copy("$path/${img.name}");
       newPaths.add(newImage.path);
     }
-    _imagesPathList = _imagesPathList + newPaths;
+    _imagesPathList += newPaths;
+    tempImgList += newPaths;
   }
 
   Future<void> removeImg(String path) async {
     try {
-      await File(path).delete();
+      // await File(path).delete();
+      tempDeleteImgList.add(path);
       _imagesPathList.remove(path);
       setState(() {});
     } catch (e) {
@@ -110,28 +156,74 @@ class _CreateDiaryState extends State<CreateDiary> {
     }
   }
 
-  void addDiary(Diary diary) {
+  Future<void> deleteAllImg() async {
+    try {
+      for (String path in _imagesPathList) {
+        await File(path).delete();
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> handleDeleteImg(String state) async {
+    switch (state) {
+      // When user save the edited data, delete images in tempDeleteImgList
+      case "save":
+        {
+          try {
+            for (String path in tempDeleteImgList) {
+              await File(path).delete();
+            }
+          } catch (e) {
+            return;
+          }
+        }
+        break;
+      // When user cancel the edited data, delete images in tempImgList
+      case "cancel":
+        {
+          try {
+            for (String path in tempImgList) {
+              await File(path).delete();
+            }
+            setState(() {
+              _imagesPathList = List.from(widget.currentDiary.imgPaths);
+            });
+          } catch (e) {
+            return;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  void saveDiary(Diary diary) {
     final diariesBox = Hive.box('diaries');
-    diariesBox.add(diary);
+    diariesBox.putAt(widget.diaryId, diary);
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        final shouldPop = await confirm(
-          context,
-          title: const Text('Discard'),
-          content: const Text(
-              "Your changes haven't been saved. \nDo you want to discard the changes?"),
-          textOK: const Text('OK'),
-          textCancel: const Text('CANCEL'),
-        );
-        if (shouldPop) {
-          deleteImgList();
-        }
-        return shouldPop;
-      },
+      onWillPop: isEditing
+          ? () async {
+              final shouldPop = await confirm(
+                context,
+                title: const Text('Discard'),
+                content: const Text(
+                    "Your changes haven't been saved. \nDo you want to discard the changes?"),
+                textOK: const Text('OK'),
+                textCancel: const Text('CANCEL'),
+              );
+              if (shouldPop) {
+                handleDeleteImg("cancel");
+              }
+              return shouldPop;
+            }
+          : () async => true,
       child: GestureDetector(
         onTap: () => setState(() {
           _focusNode.unfocus();
@@ -146,10 +238,12 @@ class _CreateDiaryState extends State<CreateDiary> {
             centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () => _discardConfirm(context),
+              onPressed: () => isEditing
+                  ? _discardConfirm(context)
+                  : Navigator.of(context).pop(),
             ),
             title: TextButton(
-              onPressed: () => _selectDate(context),
+              onPressed: isEditing ? () => _selectDate(context) : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,38 +255,63 @@ class _CreateDiaryState extends State<CreateDiary> {
                       fontSize: 18,
                     ),
                   ),
-                  const Icon(
-                    Icons.arrow_drop_down_rounded,
-                    color: Colors.black,
-                    size: 30,
-                  ),
+                  isEditing
+                      ? const Icon(
+                          Icons.arrow_drop_down_rounded,
+                          color: Colors.black,
+                          size: 30,
+                        )
+                      : Container(),
                 ],
               ),
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  //Save data to Database
-                  if (selectedMood == null) {
-                    showFlushBar(context, "Select a mood");
-                  } else {
-                    String contentJson =
-                        jsonEncode(_controller.document.toDelta().toJson());
-                    String contentPlainText =
-                        _controller.document.toPlainText().trim();
-                    final newDiary = Diary(
-                      date: selectedDate,
-                      mood: selectedMood!,
-                      contentPlainText: contentPlainText,
-                      contentJson: contentJson,
-                      imgPaths: _imagesPathList,
-                    );
-                    addDiary(newDiary);
-                    Navigator.of(context).pop();
-                  }
-                },
-                icon: const Icon(Icons.check, color: Colors.blue),
-              ),
+              isEditing
+                  ? IconButton(
+                      onPressed: () {
+                        cancelEditConfirm(context);
+                      },
+                      icon: const Icon(Icons.close_rounded),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isEditing = true;
+                        });
+                      },
+                      icon: const Icon(Icons.edit_note_rounded),
+                    ),
+              isEditing
+                  ? IconButton(
+                      onPressed: () {
+                        //Save data to Database
+                        if (selectedMood == null) {
+                          showFlushBar(context, "Select a mood");
+                        } else {
+                          String contentJson = jsonEncode(
+                              _controller.document.toDelta().toJson());
+                          String contentPlainText =
+                              _controller.document.toPlainText().trim();
+                          final newDiary = Diary(
+                            date: selectedDate,
+                            mood: selectedMood!,
+                            contentPlainText: contentPlainText,
+                            contentJson: contentJson,
+                            imgPaths: _imagesPathList,
+                          );
+                          handleDeleteImg("save");
+                          saveDiary(newDiary);
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      icon: const Icon(Icons.check, color: Colors.blue),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        _deleteConfirm(context);
+                      },
+                      icon: const Icon(Icons.delete_outline_rounded),
+                    ),
             ],
           ),
           body: Stack(
@@ -206,15 +325,20 @@ class _CreateDiaryState extends State<CreateDiary> {
                     children: [
                       moodSelectWidget(),
                       const SizedBox(height: 20),
-                      contentWidget(),
+                      isEditing ||
+                              widget.currentDiary.contentPlainText.isNotEmpty
+                          ? contentWidget()
+                          : Container(),
                       const SizedBox(height: 20),
-                      imageUploadWidget(),
+                      isEditing || widget.currentDiary.imgPaths.isNotEmpty
+                          ? imageUploadWidget()
+                          : Container(),
                       const SizedBox(height: 50),
                     ],
                   ),
                 ),
               ),
-              textToolbarWidget(),
+              isEditing ? textToolbarWidget() : Container(),
             ],
           ),
         ),
@@ -222,7 +346,7 @@ class _CreateDiaryState extends State<CreateDiary> {
     );
   }
 
-  Container moodSelectWidget() {
+  Widget moodSelectWidget() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -255,11 +379,13 @@ class _CreateDiaryState extends State<CreateDiary> {
                     child: Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedMood = null;
-                            });
-                          },
+                          onPressed: isEditing
+                              ? () {
+                                  setState(() {
+                                    selectedMood = null;
+                                  });
+                                }
+                              : () {},
                           style: ElevatedButton.styleFrom(
                             elevation: 2,
                             shape: const CircleBorder(),
@@ -345,7 +471,7 @@ class _CreateDiaryState extends State<CreateDiary> {
             scrollable: true,
             focusNode: _focusNode,
             autoFocus: false,
-            readOnly: false,
+            readOnly: !isEditing,
             placeholder: 'Write something...',
             padding: EdgeInsets.zero,
             expands: false,
@@ -442,18 +568,33 @@ class _CreateDiaryState extends State<CreateDiary> {
                 _imagesPathList.length,
                 (int index) => Stack(
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.file(
-                          File(_imagesPathList[index]),
-                          fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () {
+                        showImageViewer(
+                          context,
+                          FileImage(
+                            File(_imagesPathList[index]),
+                          ),
+                          useSafeArea: true,
+                          doubleTapZoomable: true,
+                          swipeDismissible: true,
+                        );
+                      },
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.file(
+                            File(_imagesPathList[index]),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                    Positioned(
+                    Visibility(
+                      visible: isEditing,
+                      child: Positioned(
                         top: 6,
                         right: 6,
                         child: SizedBox(
@@ -461,6 +602,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                           height: 22,
                           child: ElevatedButton(
                             onPressed: () {
+                              // Temporarily remove, not remove the original
                               removeImg(_imagesPathList[index]);
                             },
                             style: ElevatedButton.styleFrom(
@@ -472,29 +614,34 @@ class _CreateDiaryState extends State<CreateDiary> {
                             ),
                             child: const Icon(Icons.close, size: 12),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  selectImages();
-                },
-                child: DottedBorder(
-                  color: Colors.blue,
-                  dashPattern: const [10, 3],
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.add_photo_alternate_rounded,
-                        color: Colors.blue,
-                        size: 32,
+              Visibility(
+                visible: isEditing,
+                child: InkWell(
+                  onTap: () {
+                    selectImages();
+                  },
+                  child: DottedBorder(
+                    color: Colors.blue,
+                    dashPattern: const [10, 3],
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add_photo_alternate_rounded,
+                          color: Colors.blue,
+                          size: 32,
+                        ),
                       ),
                     ),
                   ),

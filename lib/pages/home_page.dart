@@ -10,6 +10,8 @@ import '../widgets/drawer_widget.dart';
 import '../widgets/floating_action_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'edit_diary.dart';
+
 class ChangePage extends StatefulWidget {
   static const route = '/';
   const ChangePage({super.key});
@@ -152,10 +154,10 @@ class _HomePageState extends State<HomePage> {
                   if (index == box.values.length - 1) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 100),
-                      child: diaryItem(currentDiary),
+                      child: diaryItem(index, currentDiary),
                     );
                   }
-                  return diaryItem(currentDiary);
+                  return diaryItem(index, currentDiary);
                 },
               );
             },
@@ -166,111 +168,122 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget diaryItem(Diary? currentDiary) {
+  Widget diaryItem(int index, Diary? currentDiary) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                text: DateFormat('d ').format(currentDiary!.date).toString(),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                children: [
-                  TextSpan(
-                    text:
-                        DateFormat('MMM').format(currentDiary.date).toString(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  )
-                ],
-              ),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EditDiary(
+              diaryId: index,
+              currentDiary: currentDiary,
             ),
-            IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          ),
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: DateFormat('d ').format(currentDiary!.date).toString(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                   children: [
-                    Image.asset(
-                      moodIconList[currentDiary.mood],
-                      height: 32,
-                    ),
-                    const VerticalDivider(
-                      width: 30,
-                      thickness: 1.0,
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: currentDiary.contentPlainText.isEmpty
-                                ? currentDiary.imgPaths.isNotEmpty
-                                    ? Container()
-                                    : const Text(
-                                        "You didn't write anything this day",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontStyle: FontStyle.italic),
-                                      )
-                                : Text(
-                                    currentDiary.contentPlainText,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                          ),
-                          const SizedBox(height: 10),
-                          if (currentDiary.imgPaths.isNotEmpty)
-                            SizedBox(
-                              height: 100,
-                              child: GridView.count(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 5.0,
-                                children: [
-                                  ...List<Widget>.generate(
-                                    currentDiary.imgPaths.length <= 3
-                                        ? currentDiary.imgPaths.length
-                                        : 3,
-                                    (int index) => currentDiary
-                                                .imgPaths.length >
-                                            3
-                                        ? handleMultipleImg(index, currentDiary)
-                                        : _imgWidget(currentDiary, index),
-                                  ),
-                                ],
-                              ),
-                            )
-                          else
-                            const SizedBox(),
-                        ],
+                    TextSpan(
+                      text: DateFormat('MMM')
+                          .format(currentDiary.date)
+                          .toString(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
-            ),
-          ],
+              IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        moodIconList[currentDiary.mood],
+                        height: 32,
+                      ),
+                      const VerticalDivider(
+                        width: 30,
+                        thickness: 1.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: currentDiary.contentPlainText.isEmpty
+                                  ? currentDiary.imgPaths.isNotEmpty
+                                      ? Container()
+                                      : const Text(
+                                          "You didn't write anything this day",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontStyle: FontStyle.italic),
+                                        )
+                                  : Text(
+                                      currentDiary.contentPlainText,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                            ),
+                            const SizedBox(height: 10),
+                            if (currentDiary.imgPaths.isNotEmpty)
+                              SizedBox(
+                                height: 100,
+                                child: GridView.count(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 5.0,
+                                  children: [
+                                    ...List<Widget>.generate(
+                                      currentDiary.imgPaths.length <= 3
+                                          ? currentDiary.imgPaths.length
+                                          : 3,
+                                      (int index) =>
+                                          currentDiary.imgPaths.length > 3
+                                              ? handleMultipleImg(
+                                                  index, currentDiary)
+                                              : _imgWidget(currentDiary, index),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            else
+                              const SizedBox(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
