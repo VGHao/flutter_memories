@@ -575,7 +575,6 @@ class _EditDiaryState extends State<EditDiary> {
                           FileImage(
                             File(_imagesPathList[index]),
                           ),
-                          useSafeArea: true,
                           doubleTapZoomable: true,
                           swipeDismissible: true,
                         );

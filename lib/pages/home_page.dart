@@ -102,68 +102,71 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      drawer: const DrawerWidget(),
-      appBar: AppBar(
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.swap_vert_rounded),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          ValueListenableBuilder(
-            valueListenable: Hive.box('diaries').listenable(),
-            builder: (context, box, _) {
-              if (box.values.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/images/empty-list.png'),
-                      Text(
-                        "homepage_empty_content_text".tr(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        drawer: const DrawerWidget(),
+        appBar: AppBar(
+          elevation: 0,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.swap_vert_rounded),
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            ValueListenableBuilder(
+              valueListenable: Hive.box('diaries').listenable(),
+              builder: (context, box, _) {
+                if (box.values.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/empty-list.png'),
+                        Text(
+                          "homepage_empty_content_text".tr(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 5.0),
-                      Text(
-                        'homepage_sub_text'.tr(),
-                        style: const TextStyle(
-                          color: Colors.grey,
+                        const SizedBox(height: 5.0),
+                        Text(
+                          'homepage_sub_text'.tr(),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: box.values.length,
+                  itemBuilder: (context, index) {
+                    Diary? currentDiary = box.getAt(index);
+                    if (index == box.values.length - 1) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 100),
+                        child: diaryItem(index, currentDiary),
+                      );
+                    }
+                    return diaryItem(index, currentDiary);
+                  },
                 );
-              }
-              return ListView.builder(
-                itemCount: box.values.length,
-                itemBuilder: (context, index) {
-                  Diary? currentDiary = box.getAt(index);
-                  if (index == box.values.length - 1) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      child: diaryItem(index, currentDiary),
-                    );
-                  }
-                  return diaryItem(index, currentDiary);
-                },
-              );
-            },
-          ),
-          const FloatingButtonWidget(),
-        ],
+              },
+            ),
+            const FloatingButtonWidget(),
+          ],
+        ),
       ),
     );
   }
