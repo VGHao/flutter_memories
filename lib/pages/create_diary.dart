@@ -138,11 +138,11 @@ class _CreateDiaryState extends State<CreateDiary> {
           isFocus = false;
         }),
         child: Scaffold(
-          backgroundColor: const Color(0xFFE5F5FF),
+          // backgroundColor: const Color(0xFFE5F5FF),
           appBar: AppBar(
             elevation: 0,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+            // backgroundColor: Colors.transparent,
+            // foregroundColor: Colors.black,
             centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded),
@@ -157,13 +157,13 @@ class _CreateDiaryState extends State<CreateDiary> {
                   Text(
                     DateFormat.yMMMd().format(selectedDate),
                     style: const TextStyle(
-                      color: Colors.black,
+                      // color: Colors.black,
                       fontSize: 18,
                     ),
                   ),
                   const Icon(
                     Icons.arrow_drop_down_rounded,
-                    color: Colors.black,
+                    // color: Colors.black,
                     size: 30,
                   ),
                 ],
@@ -191,7 +191,10 @@ class _CreateDiaryState extends State<CreateDiary> {
                     Navigator.of(context).pop();
                   }
                 },
-                icon: const Icon(Icons.check, color: Colors.blue),
+                icon: const Icon(
+                  Icons.check,
+                  // color: Colors.blue,
+                ),
               ),
             ],
           ),
@@ -227,7 +230,7 @@ class _CreateDiaryState extends State<CreateDiary> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -264,7 +267,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                             elevation: 2,
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(15),
-                            backgroundColor: Colors.white,
+                            // backgroundColor: Colors.white,
                           ),
                           child: Image.asset(moodIconList[selectedMood!],
                               height: 32),
@@ -277,7 +280,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                           text: TextSpan(
                             text: "It was ",
                             style: const TextStyle(
-                              color: Colors.black,
+                              // color: Colors.black,
                               fontSize: 14,
                             ),
                             children: <TextSpan>[
@@ -322,7 +325,7 @@ class _CreateDiaryState extends State<CreateDiary> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -368,9 +371,9 @@ class _CreateDiaryState extends State<CreateDiary> {
           ? Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: const BorderRadius.vertical(
+              decoration: const BoxDecoration(
+                // color: Colors.grey[50],
+                borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
                 ),
               ),
@@ -415,7 +418,7 @@ class _CreateDiaryState extends State<CreateDiary> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

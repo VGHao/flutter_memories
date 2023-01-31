@@ -39,6 +39,13 @@ final darkTheme = ThemeData(
     dialTextColor: Colors.white,
     hourMinuteColor: Color(0xFF003367),
   ),
+  cardColor: const Color(0xFF003367),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all(Colors.white),
+    ),
+  ),
+  dialogBackgroundColor: const Color(0xFF003367),
 );
 final lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -68,4 +75,11 @@ final lightTheme = ThemeData(
     checkColor: MaterialStateProperty.all(Colors.green),
     fillColor: MaterialStateProperty.all(Colors.white),
   ),
+  cardColor: Colors.white,
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all(Colors.black),
+    ),
+  ),
+  dialogBackgroundColor: Colors.white,
 );
