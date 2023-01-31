@@ -264,7 +264,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            elevation: 2,
+                            elevation: 0,
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(15),
                             // backgroundColor: Colors.white,

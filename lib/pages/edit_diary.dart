@@ -390,7 +390,7 @@ class _EditDiaryState extends State<EditDiary> {
                                 }
                               : () {},
                           style: ElevatedButton.styleFrom(
-                            elevation: 2,
+                            elevation: 0,
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(15),
                             // backgroundColor: Colors.white,
