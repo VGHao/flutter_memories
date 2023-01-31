@@ -20,20 +20,8 @@ final List<String> imgList = [
 ];
 
 class ChangeThemeState extends State<ChangeTheme> {
-  void onThemeChange(int value, ThemeNotifier themeNotifier) async {
-    if (value == 1) {
-      themeNotifier.setTheme(darkTheme);
-    } else if (value == 0) {
-      themeNotifier.setTheme(lightTheme);
-    }
-    final pref = await SharedPreferences.getInstance();
-    pref.setInt("ThemeMode", value);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
-    themeNotifier.getTheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change Theme"),
@@ -53,57 +41,92 @@ class ChangeThemeState extends State<ChangeTheme> {
             ),
           ),
         ),
-        child: Container(
-          margin: const EdgeInsets.only(top: 16),
-          child: Column(
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  autoPlay: false,
-                  aspectRatio: 1.0,
-                  viewportFraction: 0.75,
-                  enlargeCenterPage: true,
-                  initialPage: _selectedTheme,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _selectedTheme = index;
-                    });
-                  },
-                ),
-                items: imgList
-                    .map((item) => ClipRRect(
-                            child: Stack(
-                          children: <Widget>[
-                            Image.asset(
-                              item,
-                              height: MediaQuery.of(context).size.height * 0.7,
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              fit: BoxFit.fill,
-                            )
-                          ],
-                        )))
-                    .toList(),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 24),
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 55,
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
-                  ),
-                  onPressed: () {
-                    onThemeChange(_selectedTheme, themeNotifier);
-                  },
-                  child: Text('Use it'.toUpperCase()),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: const ThemeSlider(),
       ),
     );
   }
+}
+
+class ThemeSlider extends StatefulWidget {
+  const ThemeSlider({super.key});
+
+  @override
+  State<ThemeSlider> createState() => _ThemeSliderState();
+}
+
+class _ThemeSliderState extends State<ThemeSlider> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      child: Column(
+        children: [
+          CarouselSlider(
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.7,
+              autoPlay: false,
+              aspectRatio: 1.0,
+              viewportFraction: 0.75,
+              enlargeCenterPage: true,
+              initialPage: _selectedTheme,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _selectedTheme = index;
+                });
+              },
+            ),
+            items: imgList
+                .map((item) => ClipRRect(
+                        child: Stack(
+                      children: <Widget>[
+                        Image.asset(
+                          item,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          fit: BoxFit.fill,
+                        )
+                      ],
+                    )))
+                .toList(),
+          ),
+          const ConfirmButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class ConfirmButton extends StatelessWidget {
+  const ConfirmButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    themeNotifier.getTheme;
+    return Container(
+      margin: const EdgeInsets.only(top: 24),
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: 55,
+      child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.blue),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+        ),
+        onPressed: () {
+          onThemeChange(_selectedTheme, themeNotifier);
+        },
+        child: Text('Use it'.toUpperCase()),
+      ),
+    );
+  }
+}
+
+void onThemeChange(int value, ThemeNotifier themeNotifier) async {
+  if (value == 1) {
+    themeNotifier.setTheme(darkTheme);
+  } else if (value == 0) {
+    themeNotifier.setTheme(lightTheme);
+  }
+  final pref = await SharedPreferences.getInstance();
+  pref.setInt("ThemeMode", value);
 }
