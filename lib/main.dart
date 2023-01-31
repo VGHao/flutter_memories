@@ -7,6 +7,7 @@ import 'package:flutter_memories_dailyjournal/theme/theme_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'models/diary.dart';
+import 'pages/change_page.dart';
 import 'pages/home_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
