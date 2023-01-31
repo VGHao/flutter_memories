@@ -15,14 +15,13 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
   var diariesBox = Hive.box('diaries');
-  // List searchResults = originalData
-  //     .where((element) =>
-  //         element.contentPlainText.contains(searchController.text.toString()))
-  //     .toList();
+  late List originalData;
+  List showData = [];
 
   @override
   void initState() {
     // TODO: implement initState
+    originalData = diariesBox.values.toList();
     super.initState();
   }
 
@@ -36,12 +35,24 @@ class _SearchPageState extends State<SearchPage> {
           decoration: const InputDecoration(
             hintText: 'Search in diares',
           ),
-          onChanged: (value) {},
+          onChanged: (value) {
+            setState(() {
+              showData.clear();
+              showData = originalData.where((element) {
+                return element.contentPlainText
+                    .trim()
+                    .toLowerCase()
+                    .contains(value.toLowerCase());
+              }).toList();
+              showData.sort((a, b) => b.date.compareTo(a.date));
+            });
+          },
         ),
         actions: [
           IconButton(
             onPressed: () {
               setState(() {
+                showData.clear();
                 searchController.text = '';
               });
             },
@@ -57,7 +68,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '0 diary found',
+                '${showData.length} ${showData.length < 2 ? 'diary' : 'diaries'} found',
               ),
             ),
           ),
@@ -65,15 +76,6 @@ class _SearchPageState extends State<SearchPage> {
             child: ValueListenableBuilder(
               valueListenable: Hive.box('diaries').listenable(),
               builder: (context, box, _) {
-                List originalData = box.values.toList();
-                List showData = originalData.where((element) {
-                  print(element.toString());
-                  return element.contentPlainText
-                      .contains(searchController.text);
-                }).toList();
-
-                showData.sort((a, b) => b.date.compareTo(a.date));
-
                 return ListView.builder(
                   itemCount: showData.length,
                   itemBuilder: (context, index) {

@@ -507,11 +507,4 @@ class _CreateDiaryState extends State<CreateDiary> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    deleteImgList();
-    super.dispose();
-  }
 }
