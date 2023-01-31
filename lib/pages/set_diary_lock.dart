@@ -73,42 +73,49 @@ class _SetDiaryLockState extends State<SetDiaryLock> {
               }
             },
           ),
-          active == true
-              ? Column(
-                  children: [
-                    SetLockItems(
-                      title: 'set_lock_set_passcode_title'.tr(),
-                      subTitle: 'set_lock_set_passcode_sub_title'.tr(),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const PasscodePage(checked: 'changePassCode'),
-                          ),
-                        );
-                      },
-                    ),
-                    SetLockItems(
-                      title: 'set_lock_set_question_title'.tr(),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SecurityQuestion(
-                              passcode: '',
-                              checkEvent: 'changeQuestion',
-                            ),
-                          ),
-                        );
-                      },
-                      subTitle: 'set_lock_set_question_sub_title'.tr(),
-                    ),
-                  ],
-                )
-              : const SizedBox(),
+          active == true ? const ShowHiddenWidget() : const SizedBox(),
         ],
       ),
+    );
+  }
+}
+
+class ShowHiddenWidget extends StatelessWidget {
+  const ShowHiddenWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SetLockItems(
+          title: 'set_lock_set_passcode_title'.tr(),
+          subTitle: 'set_lock_set_passcode_sub_title'.tr(),
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    const PasscodePage(checked: 'changePassCode'),
+              ),
+            );
+          },
+        ),
+        SetLockItems(
+          title: 'set_lock_set_question_title'.tr(),
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SecurityQuestion(
+                  passcode: '',
+                  checkEvent: 'changeQuestion',
+                ),
+              ),
+            );
+          },
+          subTitle: 'set_lock_set_question_sub_title'.tr(),
+        ),
+      ],
     );
   }
 }
@@ -116,8 +123,8 @@ class _SetDiaryLockState extends State<SetDiaryLock> {
 class SetLockItems extends StatefulWidget {
   final String title;
   final String subTitle;
-
   final Function() onTap;
+
   const SetLockItems({
     super.key,
     required this.title,
@@ -162,10 +169,15 @@ class _SetLockTileState extends State<SetLockTile> {
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(left: 24, right: 24, top: 16),
       child: ListTile(
-        title: Text('set_lock_enable_diary_lock_title'.tr()),
+        title: Text(
+          'set_lock_enable_diary_lock_title'.tr(),
+        ),
         subtitle: Text(
           'set_lock_enable_diary_lock_sub_title'.tr(),
-          style: const TextStyle(fontSize: 13, color: Colors.grey),
+          style: const TextStyle(
+            fontSize: 13,
+            color: Colors.grey,
+          ),
         ),
         trailing: Switch(
           value: active,
