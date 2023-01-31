@@ -176,58 +176,29 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
 
   buildSecurityText() {
     return checkUserEvent == 'checkToLog' || checkUserEvent == 'checkToTurnOff'
-        ? Text(
-            "passcode_check_log".tr().toUpperCase(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          )
+        ? helperText("passcode_check_log".tr())
         : checkUserEvent == "noPin"
-            ? firstPin == ""
-                ? Text(
-                    "passcode_enter_new_pin".tr().toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : Text(
-                    "passcode_confirm_pin".tr().toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
+            ? checkFirstPin()
             : securePin != oldPin
-                ? Text(
-                    "passcode_enter_old_pin".tr().toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : firstPin == ""
-                    ? Text(
-                        "passcode_enter_new_pin".tr().toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : Text(
-                        "passcode_confirm_pin".tr().toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
+                ? helperText("passcode_enter_old_pin".tr())
+                : checkFirstPin();
+  }
+
+  helperText(String text) {
+    return Text(
+      text.toUpperCase(),
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  checkFirstPin() {
+    return firstPin == ""
+        ? helperText("passcode_enter_new_pin".tr())
+        : helperText("passcode_confirm_pin".tr());
   }
 
   buildPinRow() {
@@ -295,31 +266,35 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
                     },
                   ),
                   // Del button
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[400],
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    width: 60,
-                    child: MaterialButton(
-                      height: 60,
-                      onPressed: () {
-                        clearPin();
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(60),
-                      ),
-                      child: Image.asset(
-                        'assets/images/del-icon.png',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  delButton(),
                 ],
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  delButton() {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.grey[400],
+        borderRadius: BorderRadius.circular(60),
+      ),
+      width: 60,
+      child: MaterialButton(
+        height: 60,
+        onPressed: () {
+          clearPin();
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(60),
+        ),
+        child: Image.asset(
+          'assets/images/del-icon.png',
+          color: Colors.white,
         ),
       ),
     );
