@@ -77,13 +77,13 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
           child: SafeArea(
             child: Column(
               children: [
-                buildBackButton(context),
+                buildBackButton(),
                 checkUserEvent != 'checkQuestionToLog'
-                    ? buildTitle(
+                    ? buildHelperText(
                         context,
                         'question_page_title'.tr(),
                       )
-                    : buildTitle(
+                    : buildHelperText(
                         context,
                         '',
                       ),
@@ -100,96 +100,7 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
     );
   }
 
-  buildBackButton(context) {
-    return checkUserEvent == 'checkQuestionToLog'
-        ? Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(top: 12),
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                MaterialButton(
-                  onPressed: () async {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ChangePage(),
-                      ),
-                    );
-                    _answer.clear();
-                  },
-                  height: 50,
-                  minWidth: 50,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'reset_passcode'.tr(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
-            ),
-          )
-        : Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.only(top: 12),
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                MaterialButton(
-                  onPressed: () {
-                    if (oldAnswer == "") {
-                      QuestionSecureStorage.deleteSecurityQuestion();
-                      AnswerSecureStorage.deleteSecurityAnswer();
-                      _answer.clear();
-                      Navigator.pushReplacementNamed(context, 'set-lock');
-                    } else {
-                      _answer.clear();
-                      Navigator.pushReplacementNamed(context, 'set-lock');
-                    }
-                  },
-                  height: 50,
-                  minWidth: 50,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                ),
-                checkUserEvent == "setQuestion"
-                    ? Text(
-                        'create_question_back_btn'.tr(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    : Text(
-                        'change_question_back_btn'.tr(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-              ],
-            ),
-          );
-  }
-
-  buildTitle(context, title) {
+  buildHelperText(context, title) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       child: Text(
@@ -200,6 +111,100 @@ class _SecurityQuestionState extends State<SecurityQuestion> {
           fontWeight: FontWeight.w500,
         ),
         textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  buildBackButton() {
+    return checkUserEvent == 'checkQuestionToLog'
+        ? checkToLogButton()
+        : createAndChangeQuestionButton();
+  }
+
+  checkToLogButton() {
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          MaterialButton(
+            onPressed: () async {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChangePage(),
+                ),
+              );
+              _answer.clear();
+            },
+            height: 50,
+            minWidth: 50,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            'reset_passcode'.tr(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  createAndChangeQuestionButton() {
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          MaterialButton(
+            onPressed: () {
+              if (oldAnswer == "") {
+                QuestionSecureStorage.deleteSecurityQuestion();
+                AnswerSecureStorage.deleteSecurityAnswer();
+                _answer.clear();
+                Navigator.pushReplacementNamed(context, 'set-lock');
+              } else {
+                _answer.clear();
+                Navigator.pushReplacementNamed(context, 'set-lock');
+              }
+            },
+            height: 50,
+            minWidth: 50,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          ),
+          checkUserEvent == "setQuestion"
+              ? buttonTitle('create_question_back_btn'.tr())
+              : buttonTitle('change_question_back_btn'.tr())
+        ],
+      ),
+    );
+  }
+
+  buttonTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
       ),
     );
   }
@@ -329,68 +334,72 @@ class _ConfirmButtonState extends State<ConfirmButton> {
         borderRadius: BorderRadius.circular(4),
       ),
       child: MaterialButton(
-        onPressed: () async {
-          if (checkUserEvent == 'checkQuestionToLog') {
-            if (_answer.text.isEmpty) {
-              showFlushBar(context, "flush_bar_empty_answer".tr());
-            } else {
-              setState(() {
-                answer = _answer.text;
-              });
-              if (answer != oldAnswer || dropdownValue != oldQuestion) {
-                _answer.clear();
-                showFlushBar(context, 'flush_bar_not_match'.tr());
-              } else {
-                _answer.clear();
-
-                await PinSecureStorage.deletePinNumber();
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacementNamed(context, '/');
-              }
-            }
-          } else {
-            if (_answer.text.isEmpty) {
-              showFlushBar(context, "flush_bar_empty_answer".tr());
-            } else {
-              if (answer == '') {
-                setState(() {
-                  answer = _answer.text;
-                  question = dropdownValue;
-                });
-                showFlushBar(context, 'flush_bar_confirm_answer'.tr());
-                _answer.clear();
-              } else {
-                setState(() {
-                  confirmAnswer = _answer.text;
-                });
-                if (answer != confirmAnswer || question != dropdownValue) {
-                  _answer.clear();
-
-                  showFlushBar(context, 'flush_bar_not_match'.tr());
-                } else {
-                  _answer.clear();
-                  await QuestionSecureStorage.setSecurityQuestion(
-                      dropdownValue);
-                  await AnswerSecureStorage.setSecurityAnswer(answer);
-                  if (widget.passcode != '') {
-                    await PinSecureStorage.setPinNumber(widget.passcode);
-                    await CheckUserSession.setUserSession('logged');
-                  }
-
-                  print("$dropdownValue, $answer, ${widget.passcode}");
-
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacementNamed(context, 'setting-page');
-                }
-              }
-            }
-          }
-        },
         child: Text(
           'question_page_confirm_btn'.tr().toUpperCase(),
           style: const TextStyle(color: Colors.white, fontSize: 16),
         ),
+        onPressed: () async {
+          if (_answer.text.isEmpty) {
+            showFlushBar(context, "flush_bar_empty_answer".tr());
+          } else {
+            if (checkUserEvent == 'checkQuestionToLog') {
+              checkQuestionToLog();
+            } else {
+              createAndChangeQuestion();
+            }
+          }
+        },
       ),
     );
+  }
+
+  void checkQuestionToLog() async {
+    setState(() {
+      answer = _answer.text;
+    });
+    if (answer != oldAnswer || dropdownValue != oldQuestion) {
+      _answer.clear();
+      showFlushBar(context, 'flush_bar_not_match'.tr());
+    } else {
+      _answer.clear();
+
+      await PinSecureStorage.deletePinNumber();
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, '/');
+    }
+  }
+
+  void createAndChangeQuestion() async {
+    if (answer == '') {
+      setState(() {
+        answer = _answer.text;
+        question = dropdownValue;
+      });
+      showFlushBar(context, 'flush_bar_confirm_answer'.tr());
+      _answer.clear();
+    } else {
+      setState(() {
+        confirmAnswer = _answer.text;
+      });
+      if (answer != confirmAnswer || question != dropdownValue) {
+        _answer.clear();
+
+        showFlushBar(context, 'flush_bar_not_match'.tr());
+      } else {
+        _answer.clear();
+        await QuestionSecureStorage.setSecurityQuestion(dropdownValue);
+        await AnswerSecureStorage.setSecurityAnswer(answer);
+
+        if (widget.passcode != '') {
+          await PinSecureStorage.setPinNumber(widget.passcode);
+          await CheckUserSession.setUserSession('logged');
+        }
+
+        print("$dropdownValue, $answer, ${widget.passcode}");
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, 'setting-page');
+      }
+    }
   }
 }
