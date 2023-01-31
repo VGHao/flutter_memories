@@ -25,7 +25,7 @@ Widget diaryItem(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -35,8 +35,8 @@ Widget diaryItem(
             RichText(
               text: TextSpan(
                 text: DateFormat('d ').format(currentDiary!.date).toString(),
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText2?.color,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -44,9 +44,9 @@ Widget diaryItem(
                   TextSpan(
                     text:
                         DateFormat('MMM').format(currentDiary.date).toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.black,
+                      color: Theme.of(context).textTheme.bodyText2?.color,
                       fontWeight: FontWeight.normal,
                     ),
                   )
@@ -78,7 +78,7 @@ Widget diaryItem(
                                     : const Text(
                                         "You didn't write anything this day",
                                         style: TextStyle(
-                                            color: Colors.black,
+                                            // color: Colors.black,
                                             fontStyle: FontStyle.italic),
                                       )
                                 : Text(
@@ -86,8 +86,8 @@ Widget diaryItem(
                                     maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                        // color: Colors.black,
+                                        ),
                                   ),
                           ),
                           const SizedBox(height: 10),

@@ -279,8 +279,9 @@ class _CreateDiaryState extends State<CreateDiary> {
                         RichText(
                           text: TextSpan(
                             text: "It was ",
-                            style: const TextStyle(
-                              // color: Colors.black,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText2?.color,
                               fontSize: 14,
                             ),
                             children: <TextSpan>[
@@ -340,7 +341,9 @@ class _CreateDiaryState extends State<CreateDiary> {
               ),
             ),
           ),
-          const Divider(),
+          const Divider(
+            thickness: 1.0,
+          ),
           quill.QuillEditor(
             minHeight: 100,
             controller: _controller,

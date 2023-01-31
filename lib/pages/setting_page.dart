@@ -37,7 +37,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
+        elevation: 1,
         title: Text("drawer_settings".tr()),
         centerTitle: true,
         leading: IconButton(
