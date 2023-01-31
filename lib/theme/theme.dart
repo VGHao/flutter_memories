@@ -46,7 +46,9 @@ final darkTheme = ThemeData(
     ),
   ),
   dialogBackgroundColor: const Color(0xFF003367),
-  textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
+  textTheme: const TextTheme(
+    bodyText2: TextStyle(color: Colors.white),
+  ),
 );
 final lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -77,11 +79,13 @@ final lightTheme = ThemeData(
     fillColor: MaterialStateProperty.all(Colors.white),
   ),
   cardColor: Colors.white,
-  textTheme: TextTheme(bodyText2: TextStyle(color: Colors.black)),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.all(Colors.black),
     ),
   ),
   dialogBackgroundColor: Colors.white,
+  textTheme: const TextTheme(
+    bodyText2: TextStyle(color: Colors.black),
+  ),
 );
