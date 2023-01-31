@@ -11,7 +11,7 @@ Widget diaryItem(
     required int index,
     required Diary? currentDiary}) {
   return Padding(
-    padding: const EdgeInsets.all(10.0),
+    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
     child: InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(

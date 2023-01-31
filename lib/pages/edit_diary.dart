@@ -653,4 +653,11 @@ class _EditDiaryState extends State<EditDiary> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    handleDeleteImg("cancel");
+    super.dispose();
+  }
 }

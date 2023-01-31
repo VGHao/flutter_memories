@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/models/diary.dart';
+import 'package:flutter_memories_dailyjournal/pages/search_page.dart';
 import 'package:hive_flutter/adapters.dart';
 import '../widgets/diary_items.dart';
 import '../widgets/drawer_widget.dart';
@@ -26,7 +27,10 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SearchPage()));
+              },
               icon: const Icon(Icons.search),
             ),
             PopupMenuButton(
