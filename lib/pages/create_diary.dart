@@ -8,6 +8,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -51,11 +52,10 @@ class _CreateDiaryState extends State<CreateDiary> {
   Future<void> _discardConfirm(BuildContext context) async {
     if (await confirm(
       context,
-      title: const Text('Discard'),
-      content: const Text(
-          "Your changes haven't been saved. \nDo you want to discard the changes?"),
-      textOK: const Text('OK'),
-      textCancel: const Text('CANCEL'),
+      title: Text('discard_confirm_title'.tr()),
+      content: Text("discard_confirm_content".tr()),
+      textOK: Text('discard_ok'.tr()),
+      textCancel: Text('discard_cancel'.tr()),
     )) {
       deleteImgList();
       return Navigator.of(context).pop();
@@ -121,11 +121,10 @@ class _CreateDiaryState extends State<CreateDiary> {
       onWillPop: () async {
         final shouldPop = await confirm(
           context,
-          title: const Text('Discard'),
-          content: const Text(
-              "Your changes haven't been saved. \nDo you want to discard the changes?"),
-          textOK: const Text('OK'),
-          textCancel: const Text('CANCEL'),
+          title: Text('discard_confirm_title'.tr()),
+          content: Text("discard_confirm_content".tr()),
+          textOK: Text('discard_ok'.tr()),
+          textCancel: Text('discard_cancel'.tr()),
         );
         if (shouldPop) {
           deleteImgList();
@@ -235,11 +234,11 @@ class _CreateDiaryState extends State<CreateDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'How was your day?',
-              style: TextStyle(
+              'mood_select_title'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
@@ -278,7 +277,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                         ),
                         RichText(
                           text: TextSpan(
-                            text: "It was ",
+                            text: "mood_leading_text".tr(),
                             style: TextStyle(
                               color:
                                   Theme.of(context).textTheme.bodyText2?.color,
@@ -290,7 +289,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
-                              const TextSpan(text: " today.")
+                              TextSpan(text: "mood_trailing_text".tr())
                             ],
                           ),
                         ),
@@ -331,11 +330,11 @@ class _CreateDiaryState extends State<CreateDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Tell me about your day',
-              style: TextStyle(
+              'diary_content_helper_text'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
@@ -352,7 +351,7 @@ class _CreateDiaryState extends State<CreateDiary> {
             focusNode: _focusNode,
             autoFocus: false,
             readOnly: false,
-            placeholder: 'Write something...',
+            placeholder: 'diary_content_placeholder'.tr(),
             padding: EdgeInsets.zero,
             expands: false,
             onTapDown: (details, p1) {
@@ -426,11 +425,11 @@ class _CreateDiaryState extends State<CreateDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Your photos',
-              style: TextStyle(
+              'diary_add_photos'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
