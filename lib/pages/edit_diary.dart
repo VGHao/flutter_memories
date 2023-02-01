@@ -8,6 +8,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
@@ -68,11 +69,10 @@ class _EditDiaryState extends State<EditDiary> {
   Future<void> _discardConfirm(BuildContext context) async {
     if (await confirm(
       context,
-      title: const Text('Discard'),
-      content: const Text(
-          "Your changes haven't been saved. \nDo you want to discard the changes?"),
-      textOK: const Text('OK'),
-      textCancel: const Text('CANCEL'),
+      title: Text('discard_confirm_title'.tr()),
+      content: Text("discard_confirm_content".tr()),
+      textOK: Text('discard_ok'.tr()),
+      textCancel: Text('discard_cancel'.tr()),
     )) {
       handleDeleteImg("cancel");
       return Navigator.of(context).pop();
@@ -83,11 +83,10 @@ class _EditDiaryState extends State<EditDiary> {
   Future<void> cancelEditConfirm(BuildContext context) async {
     if (await confirm(
       context,
-      title: const Text('Exiting Edit Mode'),
-      content: const Text(
-          "Your changes haven't been saved. \nDo you want to discard the changes?"),
-      textOK: const Text('OK'),
-      textCancel: const Text('CANCEL'),
+      title: Text('discard_edit_title'.tr()),
+      content: Text("discard_edit_content".tr()),
+      textOK: Text('discard_ok'.tr()),
+      textCancel: Text('discard_cancel'.tr()),
     )) {
       handleDeleteImg("cancel");
       setState(() {
@@ -106,10 +105,10 @@ class _EditDiaryState extends State<EditDiary> {
   Future<void> _deleteConfirm(BuildContext context) async {
     if (await confirm(
       context,
-      title: const Text('Delete This Diary'),
-      content: const Text("Are you sure you want to delete this diary?"),
-      textOK: const Text('OK'),
-      textCancel: const Text('CANCEL'),
+      title: Text('discard_delete_title'.tr()),
+      content: Text("discard_delete_content".tr()),
+      textOK: Text('discard_ok'.tr()),
+      textCancel: Text('discard_cancel'.tr()),
     )) {
       deleteAllImg();
       diariesBox.deleteAt(widget.diaryId);
@@ -212,11 +211,10 @@ class _EditDiaryState extends State<EditDiary> {
           ? () async {
               final shouldPop = await confirm(
                 context,
-                title: const Text('Discard'),
-                content: const Text(
-                    "Your changes haven't been saved. \nDo you want to discard the changes?"),
-                textOK: const Text('OK'),
-                textCancel: const Text('CANCEL'),
+                title: Text('discard_confirm_title'.tr()),
+                content: Text("discard_confirm_content".tr()),
+                textOK: Text('discard_ok'.tr()),
+                textCancel: Text('discard_cancel'.tr()),
               );
               if (shouldPop) {
                 handleDeleteImg("cancel");
@@ -359,11 +357,11 @@ class _EditDiaryState extends State<EditDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'How was your day?',
-              style: TextStyle(
+              'mood_select_title'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
@@ -404,7 +402,7 @@ class _EditDiaryState extends State<EditDiary> {
                         ),
                         RichText(
                           text: TextSpan(
-                            text: "It was ",
+                            text: "mood_leading_text".tr(),
                             style: TextStyle(
                               color:
                                   Theme.of(context).textTheme.bodyText2?.color,
@@ -420,7 +418,7 @@ class _EditDiaryState extends State<EditDiary> {
                                         .bodyText2
                                         ?.color),
                               ),
-                              const TextSpan(text: " today.")
+                              TextSpan(text: "mood_trailing_text".tr())
                             ],
                           ),
                         ),
@@ -461,11 +459,11 @@ class _EditDiaryState extends State<EditDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Tell me about your day',
-              style: TextStyle(
+              'diary_content_helper_text'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
@@ -482,7 +480,7 @@ class _EditDiaryState extends State<EditDiary> {
             focusNode: _focusNode,
             autoFocus: false,
             readOnly: !isEditing,
-            placeholder: 'Write something...',
+            placeholder: 'diary_content_placeholder'.tr(),
             padding: EdgeInsets.zero,
             expands: false,
             onTapDown: (details, p1) {
@@ -556,11 +554,11 @@ class _EditDiaryState extends State<EditDiary> {
       ),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Your photos',
-              style: TextStyle(
+              'diary_add_photos'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
