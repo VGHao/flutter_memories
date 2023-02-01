@@ -39,7 +39,7 @@ class _SetDiaryLockState extends State<SetDiaryLock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
+        elevation: 1,
         title: Text('set_lock_title'.tr()),
         centerTitle: false,
         leading: IconButton(
