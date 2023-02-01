@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/backup_and_restore.dart';
 import 'package:flutter_memories_dailyjournal/pages/change_theme.dart';
 import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
 import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
@@ -76,7 +77,13 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.cloud_upload_outlined,
               title: 'setting_backup_restore'.tr(),
               onTap: () {
-                context.setLocale(const Locale('en', "US"));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const BackupAndRestore(),
+                    ),
+                  );
               },
             ),
 
