@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 List<String> moodIconList = [
   'assets/images/mood_cry.png',
   'assets/images/mood_sad.png',
@@ -6,9 +8,9 @@ List<String> moodIconList = [
   'assets/images/mood_excited.png',
 ];
 List<String> moodList = [
-  'heartbroken',
-  'unhappy',
-  'neutral',
-  'happy',
-  'delighted',
+  'mood_heartbroken'.tr(),
+  'mood_unhappy'.tr(),
+  'mood_neutral'.tr(),
+  'mood_happy'.tr(),
+  'mood_delighted'.tr(),
 ];
