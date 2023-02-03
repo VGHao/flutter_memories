@@ -78,12 +78,11 @@ class _SettingPageState extends State<SettingPage> {
               title: 'setting_backup_restore'.tr(),
               onTap: () {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const BackupAndRestore(),
-                    ),
-                  );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BackupAndRestore(),
+                  ),
+                );
               },
             ),
 
@@ -221,7 +220,7 @@ class RemindTimeTile extends StatefulWidget {
   State<RemindTimeTile> createState() => _RemindTimeTileState();
 }
 
-bool active = true;
+bool active = false;
 
 class _RemindTimeTileState extends State<RemindTimeTile> {
   String selectedTime = "00:00";
