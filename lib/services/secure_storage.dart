@@ -110,3 +110,35 @@ class CheckScheduledNotification {
   static deleteCheckNotificationActivate() async =>
       await _storage.delete(key: _checkNotificationActivate);
 }
+
+class CheckGoogleUserEmail {
+  static const _checkGoogleUserEmail = 'userEmail';
+
+  // Set time to secure storage
+  static Future setUserEmail(String checkUserEmail) async =>
+      await _storage.write(key: _checkGoogleUserEmail, value: checkUserEmail);
+
+  // Read CheckUserEmail from secure storage
+  static Future<String?> getUserEmail() async =>
+      await _storage.read(key: _checkGoogleUserEmail);
+
+  // Delete CheckUserEmail from secure storage
+  static deleteUserEmail() async =>
+      await _storage.delete(key: _checkGoogleUserEmail);
+}
+
+class CheckGoogleUserAvatar {
+  static const _checkGoogleUserAvatar = 'userAvatar';
+
+  // Set time to secure storage
+  static Future setUserAvatar(String userAvatar) async =>
+      await _storage.write(key: _checkGoogleUserAvatar, value: userAvatar);
+
+  // Read UserAvatar from secure storage
+  static Future<String?> getUserAvatar() async =>
+      await _storage.read(key: _checkGoogleUserAvatar);
+
+  // Delete UserAvatar from secure storage
+  static deleteUserAvatar() async =>
+      await _storage.delete(key: _checkGoogleUserAvatar);
+}
