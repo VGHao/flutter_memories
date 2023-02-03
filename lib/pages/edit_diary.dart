@@ -579,16 +579,16 @@ class _EditDiaryState extends State<EditDiary> {
                   children: [
                     InkWell(
                       onTap: () {
-                        // showImageViewer(
-                        //   context,
-                        //   FileImage(
-                        //     File(_imagesPathList[index]),
-                        //   ),
-                        //   useSafeArea: true,
-                        //   // immersive: false,
-                        //   doubleTapZoomable: true,
-                        //   swipeDismissible: true,
-                        // );
+                        showImageViewer(
+                          context,
+                          FileImage(
+                            File(_imagesPathList[index]),
+                          ),
+                          useSafeArea: true,
+                          // immersive: false,
+                          doubleTapZoomable: true,
+                          swipeDismissible: true,
+                        );
                       },
                       child: SizedBox(
                         width: double.infinity,
