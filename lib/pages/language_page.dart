@@ -106,13 +106,24 @@ class _ListLanguageState extends State<ListLanguage> {
                 ),
               ),
               value: listLanguage[index]["isSelected"],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (listLanguage[index]["isSelected"] == true) {
                   setState(() {
                     listLanguage[index]["isSelected"] = true;
                   });
                 } else {
                   _confirmChangeDialog(context, value!, index);
+                  // setState(() {
+                  //   for (var element in listLanguage) {
+                  //     element["isSelected"] = false;
+                  //   }
+                  //   listLanguage[index]["isSelected"] = value;
+                  //   context.setLocale(Locale(listLanguage[index]["language"],
+                  //       listLanguage[index]["country"]));
+                  // });
+                  // await SelectedLanguage.setLanguage(context.locale.toString());
+                  // // ignore: use_build_context_synchronously
+                  // Navigator.pushReplacementNamed(context, 'setting-page');
                 }
               },
             ),
@@ -127,9 +138,9 @@ class _ListLanguageState extends State<ListLanguage> {
     if (await confirm(
       context,
       title: const Text('Change language'),
-      content: const Text("Restart app to save change?"),
+      content: const Text("Đổi ngôn ngữ thành công"),
       textOK: const Text('OK'),
-      textCancel: const Text('CANCEL'),
+      textCancel: const SizedBox(),
     )) {
       return changeLanguage(value, index);
     }
@@ -146,6 +157,8 @@ class _ListLanguageState extends State<ListLanguage> {
           listLanguage[index]["language"], listLanguage[index]["country"]));
     });
     await SelectedLanguage.setLanguage(context.locale.toString());
-    Restart.restartApp();
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacementNamed(context, 'setting-page');
+    // Restart.restartApp();
   }
 }
