@@ -49,7 +49,12 @@ final darkTheme = ThemeData(
   textTheme: const TextTheme(
     bodyText2: TextStyle(color: Colors.white),
   ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: Color(0xFF003367),
+  ),
+  iconTheme: const IconThemeData(color: Colors.white),
 );
+
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: const Color(0xFFE5F5FF),
@@ -88,4 +93,5 @@ final lightTheme = ThemeData(
   textTheme: const TextTheme(
     bodyText2: TextStyle(color: Colors.black),
   ),
+  iconTheme: const IconThemeData(color: Colors.black),
 );
