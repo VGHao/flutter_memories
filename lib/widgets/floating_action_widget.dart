@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/create_diary.dart';
+import 'package:flutter_memories_dailyjournal/pages/image_gallery.dart';
 
 class FloatingButtonWidget extends StatelessWidget {
   const FloatingButtonWidget({
@@ -48,7 +49,10 @@ class FloatingButtonWidget extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ImageGallery()));
+            },
             style: ElevatedButton.styleFrom(
               elevation: 0,
               shape: const CircleBorder(),
