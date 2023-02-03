@@ -571,6 +571,7 @@ class _EditDiaryState extends State<EditDiary> {
             crossAxisCount: 3,
             crossAxisSpacing: 5.0,
             mainAxisSpacing: 5.0,
+            padding: const EdgeInsets.all(0.0),
             children: [
               ...List<Widget>.generate(
                 _imagesPathList.length,
@@ -578,14 +579,16 @@ class _EditDiaryState extends State<EditDiary> {
                   children: [
                     InkWell(
                       onTap: () {
-                        showImageViewer(
-                          context,
-                          FileImage(
-                            File(_imagesPathList[index]),
-                          ),
-                          doubleTapZoomable: true,
-                          swipeDismissible: true,
-                        );
+                        // showImageViewer(
+                        //   context,
+                        //   FileImage(
+                        //     File(_imagesPathList[index]),
+                        //   ),
+                        //   useSafeArea: true,
+                        //   // immersive: false,
+                        //   doubleTapZoomable: true,
+                        //   swipeDismissible: true,
+                        // );
                       },
                       child: SizedBox(
                         width: double.infinity,

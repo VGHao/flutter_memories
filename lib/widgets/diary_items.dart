@@ -99,6 +99,7 @@ Widget diaryItem(
                                 shrinkWrap: true,
                                 crossAxisCount: 3,
                                 crossAxisSpacing: 5.0,
+                                padding: const EdgeInsets.all(0.0),
                                 children: [
                                   ...List<Widget>.generate(
                                     currentDiary.imgPaths.length <= 3
