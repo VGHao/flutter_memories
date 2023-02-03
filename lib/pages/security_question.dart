@@ -220,9 +220,9 @@ class DropdownButtonExample extends StatefulWidget {
 }
 
 List<String> list = <String>[
-  'list_question_item_1'.tr(),
-  'list_question_item_2'.tr(),
-  'list_question_item_3'.tr()
+  "What is your favortie color?",
+  "What is your favorite food?",
+  "What is your favorite movie?"
 ];
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
