@@ -32,6 +32,7 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   easy_image_viewer: ^1.2.0
   restart_app: any
+  google_sign_in: any
 
 dev_dependencies:
   flutter_test:
