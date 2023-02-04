@@ -23,7 +23,6 @@ class _CalendarDiaryState extends State<CalendarDiary> {
 
   @override
   void initState() {
-    // TODO: implement initState
     originalData = diariesBox.values.toList();
     showData = _getDiariesForDay(_selectedDay);
     super.initState();
