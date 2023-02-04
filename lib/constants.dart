@@ -8,9 +8,9 @@ List<String> moodIconList = [
   'assets/images/mood_excited.png',
 ];
 List<String> moodList = [
-  'mood_heartbroken'.tr(),
-  'mood_unhappy'.tr(),
-  'mood_neutral'.tr(),
-  'mood_happy'.tr(),
-  'mood_delighted'.tr(),
+  'mood_heartbroken',
+  'mood_unhappy',
+  'mood_neutral',
+  'mood_happy',
+  'mood_delighted',
 ];
