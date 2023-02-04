@@ -2,7 +2,6 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_memories_dailyjournal/services/secure_storage.dart';
-import 'package:restart_app/restart_app.dart';
 
 class LanguagePage extends StatefulWidget {
   const LanguagePage({super.key});
@@ -12,6 +11,46 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    init();
+  }
+
+  Future init() async {
+    String language = await SelectedLanguage.getLanguage() ?? 'en_US';
+
+    setState(() {
+      for (var element in listLanguage) {
+        if (element["language_name"] == language) {
+          element["isSelected"] = true;
+        } else {
+          element["isSelected"] = false;
+        }
+      }
+    });
+  }
+
+  List listLanguage = [
+    {
+      'id': 0,
+      'title': 'English',
+      'isSelected': true,
+      'language_name': 'en_US',
+      'language': 'en',
+      'country': 'US',
+    },
+    {
+      'id': 1,
+      'title': 'Việt Nam',
+      'isSelected': false,
+      'language_name': 'vi',
+      'language': 'vi',
+      'country': '',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,61 +65,11 @@ class _LanguagePageState extends State<LanguagePage> {
           },
         ),
       ),
-      body: const ListLanguage(),
+      body: listLanguageWidget(),
     );
   }
-}
 
-class ListLanguage extends StatefulWidget {
-  const ListLanguage({super.key});
-
-  @override
-  State<ListLanguage> createState() => _ListLanguageState();
-}
-
-List listLanguage = [
-  {
-    'id': 0,
-    'title': 'English',
-    'isSelected': true,
-    'language_name': 'en_US',
-    'language': 'en',
-    'country': 'US',
-  },
-  {
-    'id': 1,
-    'title': 'Việt Nam',
-    'isSelected': false,
-    'language_name': 'vi',
-    'language': 'vi',
-    'country': '',
-  },
-];
-
-class _ListLanguageState extends State<ListLanguage> {
-  @override
-  void initState() {
-    super.initState();
-
-    init();
-  }
-
-  Future init() async {
-    String language = await SelectedLanguage.getLanguage() ?? '';
-
-    setState(() {
-      for (var element in listLanguage) {
-        if (element["language_name"] == language) {
-          element["isSelected"] = true;
-        } else {
-          element["isSelected"] = false;
-        }
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget listLanguageWidget() {
     return Column(
       children: [
         const SizedBox(height: 12),
@@ -113,17 +102,6 @@ class _ListLanguageState extends State<ListLanguage> {
                   });
                 } else {
                   _confirmChangeDialog(context, value!, index);
-                  // setState(() {
-                  //   for (var element in listLanguage) {
-                  //     element["isSelected"] = false;
-                  //   }
-                  //   listLanguage[index]["isSelected"] = value;
-                  //   context.setLocale(Locale(listLanguage[index]["language"],
-                  //       listLanguage[index]["country"]));
-                  // });
-                  // await SelectedLanguage.setLanguage(context.locale.toString());
-                  // // ignore: use_build_context_synchronously
-                  // Navigator.pushReplacementNamed(context, 'setting-page');
                 }
               },
             ),
@@ -137,8 +115,8 @@ class _ListLanguageState extends State<ListLanguage> {
       BuildContext context, bool value, int index) async {
     if (await confirm(
       context,
-      title: const Text('Change language'),
-      content: const Text("Đổi ngôn ngữ thành công"),
+      title: Text('confirm_change_language_title'.tr()),
+      content: Text("confirm_change_language_content".tr()),
       textOK: const Text('OK'),
       textCancel: const SizedBox(),
     )) {
@@ -159,6 +137,5 @@ class _ListLanguageState extends State<ListLanguage> {
     await SelectedLanguage.setLanguage(context.locale.toString());
     // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, 'setting-page');
-    // Restart.restartApp();
   }
 }
