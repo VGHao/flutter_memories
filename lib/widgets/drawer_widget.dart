@@ -55,7 +55,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ChangeTheme()),
+                      builder: (context) => const ChangeTheme(),
+                    ),
                   );
                 },
               ),
@@ -93,6 +94,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 icon: Icons.backup_outlined,
                 title: "drawer_backup_restore".tr(),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -116,7 +116,7 @@ class ConfirmButton extends StatelessWidget {
         ),
         onPressed: () {
           onThemeChange(_selectedTheme, themeNotifier);
-          // Navigator.pop(context);
+          Navigator.pop(context);
         },
         child: Text('Use it'.toUpperCase()),
       ),

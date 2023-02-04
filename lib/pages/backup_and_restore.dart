@@ -22,7 +22,8 @@ class _BackupAndRestoreState extends State<BackupAndRestore> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, 'setting-page');
+            // Navigator.pushReplacementNamed(context, 'setting-page');
+            Navigator.pop(context);
           },
         ),
         centerTitle: true,
