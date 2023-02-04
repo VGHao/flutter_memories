@@ -409,7 +409,7 @@ class _EditDiaryState extends State<EditDiary> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                text: moodList[selectedMood!],
+                                text: moodList[selectedMood!].tr(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Theme.of(context)
