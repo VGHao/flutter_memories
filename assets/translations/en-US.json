@@ -80,5 +80,15 @@
     "mood_unhappy": "unhappy",
     "mood_neutral": "neutral",
     "mood_happy": "happy",
-    "mood_delighted": "delighted"
+    "mood_delighted": "delighted",
+    "confirm_change_language_title": "Language",
+    "confirm_change_language_content": "Change Language successfully",
+    "backup_page_title": "Backup & Restore",
+    "backup_page_backup_tile_title": "Sao lưu dữ liệu",
+    "backup_page_restore_tile_title": "Khôi phục dữ liệu",
+    "backup_page_gg_tile_title": "Choose a Google account",
+    "backup_page_gg_tile_subtitle" : "Backup Account",
+    "backup_change_account_btn": "Change account",
+    "backup_remove_account_btn": "Remove account",
+    "img_gallery_title": "Gallery"
 }
