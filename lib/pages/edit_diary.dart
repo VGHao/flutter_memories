@@ -501,9 +501,9 @@ class _EditDiaryState extends State<EditDiary> {
           ? Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),
-              decoration: const BoxDecoration(
-                // color: Colors.grey[50],
-                borderRadius: BorderRadius.vertical(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.6),
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(30),
                 ),
               ),

@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isReversed = true;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

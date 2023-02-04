@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import 'package:flutter_memories_dailyjournal/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,12 +125,12 @@ class ConfirmButton extends StatelessWidget {
   }
 }
 
-void onThemeChange(int value, ThemeNotifier themeNotifier) async {
+Future<void> onThemeChange(int value, ThemeNotifier themeNotifier) async {
   if (value == 1) {
-    themeNotifier.setTheme(darkTheme);
+    await themeNotifier.setTheme(darkTheme);
   } else if (value == 0) {
-    themeNotifier.setTheme(lightTheme);
+    await themeNotifier.setTheme(lightTheme);
   }
   final pref = await SharedPreferences.getInstance();
-  pref.setInt("ThemeMode", value);
+  await pref.setInt("ThemeMode", value);
 }
