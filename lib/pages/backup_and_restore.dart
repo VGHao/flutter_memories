@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../services/secure_storage.dart';
 
 class BackupAndRestore extends StatefulWidget {
@@ -16,7 +16,7 @@ class _BackupAndRestoreState extends State<BackupAndRestore> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: const Text('Backup & Restore'),
+        title: Text('backup_page_title'.tr()),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -86,11 +86,11 @@ class _BodyContentState extends State<BodyContent> {
             ? Column(
                 children: [
                   backupAndRestoreTitle(
-                    'Backup Data',
+                    'backup_page_backup_tile_title'.tr(),
                     () {},
                   ),
                   backupAndRestoreTitle(
-                    'Data Recovery',
+                    'backup_page_restore_tile_title'.tr(),
                     () {},
                   )
                 ],
@@ -144,10 +144,10 @@ class _BodyContentState extends State<BodyContent> {
                   ),
                 ),
           title: userEmail == ""
-              ? const Text('Choose a Google account')
-              : const Text('Backup Account'),
+              ? Text('backup_page_gg_tile_title'.tr())
+              : Text('backup_page_gg_tile_subtitle'.tr()),
           subtitle: userEmail == ""
-              ? googleSigInTileSubTitle('Choose a Google account')
+              ? googleSigInTileSubTitle('backup_page_gg_tile_title'.tr())
               : googleSigInTileSubTitle(userEmail)),
     );
   }
@@ -196,7 +196,7 @@ class _BodyContentState extends State<BodyContent> {
                   ),
                 ),
               ),
-              child: const Text('Change account'),
+              child: Text('backup_change_account_btn'.tr()),
               onPressed: () {
                 googleChangeAccout();
               },
@@ -206,9 +206,8 @@ class _BodyContentState extends State<BodyContent> {
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all(Colors.red),
             ),
-            child: const Text(
-              'Remove account',
-              style: TextStyle(),
+            child: Text(
+              'backup_remove_account_btn'.tr(),
             ),
             onPressed: () {
               googleSignOut();
@@ -225,7 +224,8 @@ class _BodyContentState extends State<BodyContent> {
   }
 
   googleChangeAccout() async {
-    googleLogin();
+    // await googleSignOut();
+    // googleLogin();
   }
 
   googleLogin() async {
