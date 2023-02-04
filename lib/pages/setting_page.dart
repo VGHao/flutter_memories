@@ -5,6 +5,7 @@ import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
 import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_memories_dailyjournal/pages/privacy_policy_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import '../services/secure_storage.dart';
 import 'passcode_page.dart';
@@ -137,7 +138,14 @@ class _SettingPageState extends State<SettingPage> {
             SettingItems(
               icon: Icons.security,
               title: 'setting_privacy_policy'.tr(),
-              onTap: () {},
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => PrivacyPolicyPage(),
+                //   ),
+                // );
+              },
             ),
             SettingItems(
               icon: Icons.shield,
