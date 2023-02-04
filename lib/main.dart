@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import 'package:flutter_memories_dailyjournal/pages/setting_page.dart';
 import 'package:flutter_memories_dailyjournal/theme/theme.dart';
@@ -8,7 +7,6 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'models/diary.dart';
 import 'pages/change_page.dart';
-import 'pages/home_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';

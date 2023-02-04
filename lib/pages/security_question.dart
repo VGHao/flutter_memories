@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import '../services/secure_storage.dart';
 import '../widgets/show_flush_bar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -396,8 +395,6 @@ class _ConfirmButtonState extends State<ConfirmButton> {
           await PinSecureStorage.setPinNumber(widget.passcode);
           await CheckUserSession.setUserSession('logged');
         }
-
-        print("$dropdownValue, $answer, ${widget.passcode}");
 
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, 'setting-page');

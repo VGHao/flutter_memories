@@ -83,8 +83,6 @@ class NotificationApi {
       hour - 7,
       minute,
     );
-    print('now ${now}');
-    print('scheduled ${scheduledDate}');
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }

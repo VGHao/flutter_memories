@@ -7,7 +7,6 @@ import 'package:flutter_memories_dailyjournal/widgets/show_flush_bar.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'dart:io';
 import 'dart:async';
@@ -126,7 +125,7 @@ class _EditDiaryState extends State<EditDiary> {
       // print(tempImgList.toString());
       setState(() {});
     } catch (e) {
-      print(e);
+      return;
     }
   }
 
@@ -504,7 +503,7 @@ class _EditDiaryState extends State<EditDiary> {
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: Colors.grey[50],
-                borderRadius: BorderRadius.vertical(
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(30),
                 ),
               ),

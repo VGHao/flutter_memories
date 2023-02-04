@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../constants.dart';
 import '../models/diary.dart';
 import '../pages/edit_diary.dart';
@@ -78,7 +77,7 @@ Widget diaryItem(
                                     ? Container()
                                     : Text(
                                         "empty_content_diary".tr(),
-                                        style:const  TextStyle(
+                                        style: const TextStyle(
                                             // color: Colors.black,
                                             fontStyle: FontStyle.italic),
                                       )

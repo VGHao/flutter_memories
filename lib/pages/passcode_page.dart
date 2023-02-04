@@ -84,7 +84,6 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
     setState(() {
       securePin = pin;
       checkUserEvent = widget.check;
-      print(checkUserEvent);
     });
   }
 

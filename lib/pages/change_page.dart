@@ -58,14 +58,14 @@ class _ChangePageState extends State<ChangePage> with WidgetsBindingObserver {
 
     if (isBackgroud) {
       String pin = await PinSecureStorage.getPinNumber() ?? '';
-      print('detect: ${pin} ${userSession}');
 
       if (pin != "") {
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const PasscodePage(checked: 'checkPassOnResume'),
+            builder: (context) =>
+                const PasscodePage(checked: 'checkPassOnResume'),
           ),
         );
       }

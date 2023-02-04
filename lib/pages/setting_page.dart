@@ -290,17 +290,12 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
             .formatTimeOfDay(time, alwaysUse24HourFormat: true)
             .toString();
         SelectedTime.setTime(selectedTime);
-        print(selectedTime);
       });
       if (active == true) {
-        print(check);
         if (check == "true") {
-          print(check);
           callScheduledNotification();
         }
-      } else {
-        print(check);
-      }
+      } else {}
     }
   }
 

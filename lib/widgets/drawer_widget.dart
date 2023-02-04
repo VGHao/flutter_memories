@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import '../pages/backup_and_restore.dart';
 import '../pages/change_theme.dart';
-import '../pages/passcode_page.dart';
 import '../pages/setting_page.dart';
 import '../services/secure_storage.dart';
 import 'drawer_items.dart';

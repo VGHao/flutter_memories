@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -49,7 +48,7 @@ class _CalendarDiaryState extends State<CalendarDiary> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title:  Text("calendar_appbar_title".tr()),
+        title: Text("calendar_appbar_title".tr()),
       ),
       body: Column(
         children: [
