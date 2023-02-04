@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 
 List<String> moodIconList = [
   'assets/images/mood_cry.png',
