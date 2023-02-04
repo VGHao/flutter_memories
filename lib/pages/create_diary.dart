@@ -285,7 +285,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                text: moodList[selectedMood!],
+                                text: moodList[selectedMood!].tr(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
