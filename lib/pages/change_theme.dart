@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import 'package:flutter_memories_dailyjournal/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -115,9 +114,8 @@ class ConfirmButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(Colors.blue),
           foregroundColor: MaterialStateProperty.all(Colors.white),
         ),
-        onPressed: () {
+        onPressed: () async {
           onThemeChange(_selectedTheme, themeNotifier);
-          Navigator.pop(context);
         },
         child: Text('Use it'.toUpperCase()),
       ),
