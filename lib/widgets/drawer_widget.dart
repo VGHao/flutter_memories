@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/backup_and_restore.dart';
 import '../pages/change_theme.dart';
 import '../pages/passcode_page.dart';
 import '../pages/setting_page.dart';
@@ -85,7 +86,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               DrawerItems(
                 icon: Icons.backup_outlined,
                 title: "drawer_backup_restore".tr(),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BackupAndRestore(),
+                    ),
+                  );
+                },
               ),
               const Divider(
                 indent: 20,
