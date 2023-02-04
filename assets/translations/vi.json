@@ -80,5 +80,15 @@
     "mood_unhappy": "buồn",
     "mood_neutral": "bình thường",
     "mood_happy": "vui",
-    "mood_delighted": "rất vui"
+    "mood_delighted": "rất vui",
+    "confirm_change_language_title": "Ngôn ngữ",
+    "confirm_change_language_content": "Đổi ngôn ngữ thành công",
+    "backup_page_title": "Sao lưu & Khôi phục",
+    "backup_page_backup_tile_title": "Sao lưu dữ liệu",
+    "backup_page_restore_tile_title": "Khôi phục dữ liệu",
+    "backup_page_gg_tile_title": "Chọn 1 tài khoản Google",
+    "backup_page_gg_tile_subtitle" : "Tài khoản sao lưu",
+    "backup_change_account_btn": "Đổi tài khoản",
+    "backup_remove_account_btn": "Đăng xuất",
+    "img_gallery_title": "Kho ảnh"
 }
