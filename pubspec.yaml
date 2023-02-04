@@ -37,6 +37,7 @@ dependencies:
   connectivity_plus: any
   fluttertoast: ^8.1.2
   flutter_html: ^3.0.0-alpha.6
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
