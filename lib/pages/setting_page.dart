@@ -58,128 +58,139 @@ class _SettingPageState extends State<SettingPage> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Data Security
-            ComponentTitle(
-              title: 'setting_data_security'.tr(),
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
             ),
-            SettingItems(
-              icon: Icons.lock_outline,
-              title: 'setting_diary_lock'.tr(),
-              onTap: () {
-                if (securePin != "") {
+          );
+          return false;
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Data Security
+              ComponentTitle(
+                title: 'setting_data_security'.tr(),
+              ),
+              SettingItems(
+                icon: Icons.lock_outline,
+                title: 'setting_diary_lock'.tr(),
+                onTap: () {
+                  if (securePin != "") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const PasscodePage(checked: 'checkToTurnOff'),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SetDiaryLock(),
+                      ),
+                    );
+                  }
+                },
+              ),
+              SettingItems(
+                icon: Icons.cloud_upload_outlined,
+                title: 'setting_backup_restore'.tr(),
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          const PasscodePage(checked: 'checkToTurnOff'),
+                      builder: (context) => const BackupAndRestore(),
                     ),
                   );
-                } else {
+                },
+              ),
+
+              // Notifications
+              ComponentTitle(
+                title: 'setting_notifications'.tr(),
+              ),
+              const RemindTimeTile(
+                time: '21:10',
+              ),
+
+              // Appearance
+              ComponentTitle(
+                title: 'setting_appearance'.tr(),
+              ),
+              SettingItems(
+                icon: Icons.color_lens_outlined,
+                title: 'setting_theme'.tr(),
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SetDiaryLock(),
+                      builder: (context) => const ChangeTheme(),
                     ),
                   );
-                }
-              },
-            ),
-            SettingItems(
-              icon: Icons.cloud_upload_outlined,
-              title: 'setting_backup_restore'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BackupAndRestore(),
-                  ),
-                );
-              },
-            ),
+                },
+              ),
 
-            // Notifications
-            ComponentTitle(
-              title: 'setting_notifications'.tr(),
-            ),
-            const RemindTimeTile(
-              time: '21:10',
-            ),
+              SettingItems(
+                icon: Icons.language,
+                title: 'setting_language'.tr(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LanguagePage(),
+                    ),
+                  );
+                },
+              ),
 
-            // Appearance
-            ComponentTitle(
-              title: 'setting_appearance'.tr(),
-            ),
-            SettingItems(
-              icon: Icons.color_lens_outlined,
-              title: 'setting_theme'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChangeTheme(),
-                  ),
-                );
-              },
-            ),
-
-            SettingItems(
-              icon: Icons.language,
-              title: 'setting_language'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LanguagePage(),
-                  ),
-                );
-              },
-            ),
-
-            // Other
-            ComponentTitle(
-              title: 'setting_other'.tr(),
-            ),
-            SettingItems(
-              icon: Icons.security,
-              title: 'setting_privacy_policy'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PrivacyPolicyPage(),
-                  ),
-                );
-              },
-            ),
-            SettingItems(
-              icon: Icons.shield,
-              title: 'setting_tems_conditions'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TermsAndConditions(),
-                  ),
-                );
-              },
-            ),
-            SettingItems(
-              icon: Icons.info_outline,
-              title: 'setting_about_us'.tr(),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AboutUsPage(),
-                  ),
-                );
-              },
-            ),
-          ],
+              // Other
+              ComponentTitle(
+                title: 'setting_other'.tr(),
+              ),
+              SettingItems(
+                icon: Icons.security,
+                title: 'setting_privacy_policy'.tr(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicyPage(),
+                    ),
+                  );
+                },
+              ),
+              SettingItems(
+                icon: Icons.shield,
+                title: 'setting_tems_conditions'.tr(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TermsAndConditions(),
+                    ),
+                  );
+                },
+              ),
+              SettingItems(
+                icon: Icons.info_outline,
+                title: 'setting_about_us'.tr(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutUsPage(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -290,7 +301,7 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
     NotificationApi.showScheduledNotification(
       title: 'Memories - Daily Journal',
       body: 'Time to write your new diary',
-      payload: 'assets/images/icon_launcher/icon_launcher.png',
+      payload: 'diary',
       hour: int.parse(selectedTime.split(":")[0]),
       minute: int.parse(selectedTime.split(":")[1]),
     );
