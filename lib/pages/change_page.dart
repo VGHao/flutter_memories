@@ -62,10 +62,10 @@ class _ChangePageState extends State<ChangePage> with WidgetsBindingObserver {
 
       if (pin != "") {
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const PasscodePage(checked: 'checkToLog'),
+            builder: (context) => const PasscodePage(checked: 'checkPassOnResume'),
           ),
         );
       }
@@ -77,7 +77,7 @@ class _ChangePageState extends State<ChangePage> with WidgetsBindingObserver {
     return securePin != ''
         ? userSession != 'logged'
             ? const PasscodePage(
-                checked: 'checkToLog',
+                checked: 'checkPassOnCreate',
               )
             : const HomePage()
         : const HomePage();

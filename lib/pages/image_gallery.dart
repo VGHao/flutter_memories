@@ -32,12 +32,12 @@ class ImageGallery extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.info_outline_rounded, size: 30),
-                    SizedBox(height: 10),
+                  children: [
+                    const Icon(Icons.info_outline_rounded, size: 30),
+                    const SizedBox(height: 10),
                     Text(
-                      "No Image Found",
-                      style: TextStyle(
+                      "img_gallery_empty".tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),

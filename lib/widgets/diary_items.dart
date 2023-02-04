@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../constants.dart';
@@ -75,9 +76,9 @@ Widget diaryItem(
                             child: currentDiary.contentPlainText.isEmpty
                                 ? currentDiary.imgPaths.isNotEmpty
                                     ? Container()
-                                    : const Text(
-                                        "You didn't write anything this day",
-                                        style: TextStyle(
+                                    : Text(
+                                        "empty_content_diary".tr(),
+                                        style:const  TextStyle(
                                             // color: Colors.black,
                                             fontStyle: FontStyle.italic),
                                       )

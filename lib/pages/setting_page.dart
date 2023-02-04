@@ -5,6 +5,7 @@ import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
 import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import '../services/secure_storage.dart';
 import 'passcode_page.dart';
 
@@ -61,7 +62,7 @@ class _SettingPageState extends State<SettingPage> {
               title: 'setting_diary_lock'.tr(),
               onTap: () {
                 if (securePin != "") {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
@@ -69,7 +70,12 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                   );
                 } else {
-                  Navigator.pushReplacementNamed(context, 'set-lock');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SetDiaryLock(),
+                    ),
+                  );
                 }
               },
             ),
@@ -77,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.cloud_upload_outlined,
               title: 'setting_backup_restore'.tr(),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const BackupAndRestore(),
@@ -102,7 +108,7 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.color_lens_outlined,
               title: 'setting_theme'.tr(),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const ChangeTheme(),
@@ -115,7 +121,7 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.language,
               title: 'setting_language'.tr(),
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const LanguagePage(),

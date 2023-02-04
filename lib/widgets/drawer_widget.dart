@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import '../pages/backup_and_restore.dart';
 import '../pages/change_theme.dart';
 import '../pages/passcode_page.dart';
@@ -66,28 +67,35 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 endIndent: 20,
                 thickness: 1,
               ),
-              DrawerItems(
-                icon: Icons.lock_outlined,
-                title: "drawer_diary_lock".tr(),
-                onTap: () {
-                  if (securePin != "") {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const PasscodePage(checked: 'checkToTurnOff'),
-                      ),
-                    );
-                  } else {
-                    Navigator.pushReplacementNamed(context, 'set-lock');
-                  }
-                },
-              ),
+              // DrawerItems(
+              //   icon: Icons.lock_outlined,
+              //   title: "drawer_diary_lock".tr(),
+              //   onTap: () {
+              //     if (securePin != "") {
+              //       Navigator.pop(context);
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) =>
+              //               const PasscodePage(checked: 'checkToTurnOff'),
+              //         ),
+              //       );
+              //     } else {
+              //       Navigator.pop(context);
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => const SetDiaryLock(),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
               DrawerItems(
                 icon: Icons.backup_outlined,
                 title: "drawer_backup_restore".tr(),
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const BackupAndRestore(),

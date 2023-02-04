@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/widgets/show_flush_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../services/secure_storage.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class BackupAndRestore extends StatefulWidget {
   const BackupAndRestore({super.key});
@@ -68,15 +71,22 @@ class _BodyContentState extends State<BodyContent> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        googleSigInTile(
+        googleSignInTile(
           // Tile onTap
           userAvatar == ''
-              ? () {
-                  googleLogin();
+              ? () async {
+                  var connectivityResult =
+                      await (Connectivity().checkConnectivity());
+                  if (connectivityResult == ConnectivityResult.mobile) {
+                    googleLogin();
+                  } else if (connectivityResult == ConnectivityResult.wifi) {
+                    googleLogin();
+                  } else {
+                    // ignore: use_build_context_synchronously
+                    showFlushBar(context, 'No Internet');
+                  }
                 }
-              : () {
-                  iconBtnBottomSheet();
-                },
+              : () {},
           // Icon Button OnPressed
           () {
             iconBtnBottomSheet();
@@ -111,7 +121,7 @@ class _BodyContentState extends State<BodyContent> {
     );
   }
 
-  Widget googleSigInTile(Function() onTap, Function() onPressed) {
+  Widget googleSignInTile(Function() onTap, Function() onPressed) {
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(left: 24, right: 24, top: 16),
@@ -124,7 +134,8 @@ class _BodyContentState extends State<BodyContent> {
                   onPressed: onPressed,
                 )
               : const SizedBox(),
-          leading: userAvatar != ""
+          leading: (userAvatar != "" ||
+           userAvatar == "null")
               ? CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage(
@@ -176,7 +187,7 @@ class _BodyContentState extends State<BodyContent> {
     final height = MediaQuery.of(context).size.height;
     return Container(
       padding: const EdgeInsets.only(top: 8),
-      height: height * 0.2,
+      height: height * 0.15,
       width: width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -184,48 +195,32 @@ class _BodyContentState extends State<BodyContent> {
         children: [
           Text(userEmail),
           SizedBox(
-            width: width * 0.9,
-            height: 45,
+            width: width * 0.85,
+            height: 50,
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
                 foregroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+              ),
+              child: Text(
+                'backup_remove_account_btn'.tr(),
+                style: const TextStyle(
+                  fontSize: 16,
                 ),
               ),
-              child: Text('backup_change_account_btn'.tr()),
               onPressed: () {
-                googleChangeAccout();
+                googleSignOut();
+                setState(() {
+                  userEmail = "";
+                  userAvatar = "";
+                });
+                Navigator.pop(context);
               },
             ),
-          ),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.red),
-            ),
-            child: Text(
-              'backup_remove_account_btn'.tr(),
-            ),
-            onPressed: () {
-              googleSignOut();
-              setState(() {
-                userEmail = "";
-                userAvatar = "";
-              });
-              Navigator.pop(context);
-            },
           ),
         ],
       ),
     );
-  }
-
-  googleChangeAccout() async {
-    // await googleSignOut();
-    // googleLogin();
   }
 
   googleLogin() async {

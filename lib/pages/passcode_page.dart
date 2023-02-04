@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/security_question.dart';
 import '../services/secure_storage.dart';
 import '../widgets/show_flush_bar.dart';
@@ -92,7 +93,8 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
     return SafeArea(
       child: Column(
         children: [
-          checkUserEvent == 'checkToLog'
+          checkUserEvent == 'checkPassOnResume' ||
+                  checkUserEvent == 'checkPassOnCreate'
               ? const SizedBox(
                   height: 70,
                   width: 50,
@@ -113,7 +115,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             ),
           ),
           buildKeyBoard(),
-          checkUserEvent == 'checkToLog'
+          checkUserEvent == 'checkPassOnResume'
               ? buildResetBtn()
               : const SizedBox(
                   height: 60,
@@ -156,10 +158,11 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
       child: MaterialButton(
         onPressed: () async {
           if (checkUserEvent == 'checkToTurnOff') {
-            await Navigator.pushReplacementNamed(context, 'setting-page');
-          } else {
-            await Navigator.pushReplacementNamed(context, 'set-lock');
+            Navigator.pop(context);
           }
+          //  else {
+          //   await Navigator.pushReplacementNamed(context, 'set-lock');
+          // }
         },
         height: 50,
         minWidth: 50,
@@ -175,7 +178,9 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
   }
 
   buildSecurityText() {
-    return checkUserEvent == 'checkToLog' || checkUserEvent == 'checkToTurnOff'
+    return checkUserEvent == 'checkPassOnResume' ||
+            checkUserEvent == 'checkToTurnOff' ||
+            checkUserEvent == 'checkPassOnCreate'
         ? helperText("passcode_check_log".tr())
         : checkUserEvent == "noPin"
             ? checkFirstPin()
@@ -327,8 +332,9 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
     }
     createPasscode(strPin);
     changePassCode(strPin);
-    checkPasscodeToLog(strPin);
+    checkPassOnResume(strPin);
     checkPassCodeToTurnOff(strPin);
+    checkPassOnCreate(strPin);
   }
 
   createPasscode(strPin) {
@@ -440,8 +446,29 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
     }
   }
 
-  checkPasscodeToLog(strPin) async {
-    if (checkUserEvent == 'checkToLog') {
+  checkPassOnResume(strPin) async {
+    if (checkUserEvent == 'checkPassOnResume') {
+      if (pinIndex == 4) {
+        setState(() {
+          firstPin = strPin;
+        });
+        if (firstPin != securePin) {
+          showFlushBar(
+            context,
+            'flush_bar_wrong_pin'.tr(),
+          );
+          clearPinField();
+        } else {
+          // await CheckUserSession.setUserSession('logged');
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
+        }
+      }
+    }
+  }
+
+  checkPassOnCreate(strPin) async {
+    if (checkUserEvent == 'checkPassOnCreate') {
       if (pinIndex == 4) {
         setState(() {
           firstPin = strPin;
@@ -455,7 +482,12 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         } else {
           await CheckUserSession.setUserSession('logged');
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
         }
       }
     }

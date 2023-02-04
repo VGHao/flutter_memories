@@ -29,7 +29,8 @@ class ChangeThemeState extends State<ChangeTheme> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, 'setting-page');
+            // Navigator.pushReplacementNamed(context, 'setting-page');
+            Navigator.pop(context);
           },
         ),
       ),
@@ -115,6 +116,7 @@ class ConfirmButton extends StatelessWidget {
         ),
         onPressed: () {
           onThemeChange(_selectedTheme, themeNotifier);
+          Navigator.pop(context);
         },
         child: Text('Use it'.toUpperCase()),
       ),

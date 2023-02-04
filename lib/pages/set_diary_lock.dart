@@ -45,7 +45,7 @@ class _SetDiaryLockState extends State<SetDiaryLock> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, 'setting-page');
+            Navigator.pop(context);
           },
         ),
       ),

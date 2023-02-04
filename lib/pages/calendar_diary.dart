@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../models/diary.dart';
 import '../widgets/diary_items.dart';
 
@@ -49,7 +49,7 @@ class _CalendarDiaryState extends State<CalendarDiary> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text("Calendar"),
+        title:  Text("calendar_appbar_title".tr()),
       ),
       body: Column(
         children: [
@@ -95,12 +95,12 @@ class _CalendarDiaryState extends State<CalendarDiary> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.info_outline_rounded, size: 30),
-                        SizedBox(height: 10),
+                      children: [
+                        const Icon(Icons.info_outline_rounded, size: 30),
+                        const SizedBox(height: 10),
                         Text(
-                          "There is nothing here",
-                          style: TextStyle(
+                          "calendar_empty".tr(),
+                          style: const TextStyle(
                             fontSize: 16,
                           ),
                         ),

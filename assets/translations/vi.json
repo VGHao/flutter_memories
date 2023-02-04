@@ -90,5 +90,17 @@
     "backup_page_gg_tile_subtitle" : "Tài khoản sao lưu",
     "backup_change_account_btn": "Đổi tài khoản",
     "backup_remove_account_btn": "Đăng xuất",
-    "img_gallery_title": "Kho ảnh"
+    "img_gallery_title": "Kho ảnh",
+    "img_gallery_empty": "Không tìm thấy ảnh",
+    "exit_dialog_title": "Thoát app",
+    "exit_dialog_content": "Bạn có chắc chắn muốn thoát khỏi app?",
+    "calendar_appbar_title": "Lịch",
+    "calendar_empty": "Không có nhật ký",
+    "empty_content_diary" : "Hôm nay bạn không viết gì cả",
+    "sort_menu_latest": "Mới nhất",
+    "sort_menu_oldest": "Xa nhất",
+    "search_hint": "Tìm kiếm nhật ký",
+    "search_count_single": "kết quả",
+    "search_count_multiple": "kết quả",
+    "search_count_found" : "được tìm thấy"
 }

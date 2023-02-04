@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,8 +33,8 @@ class _SearchPageState extends State<SearchPage> {
         elevation: 0,
         title: TextFormField(
           controller: searchController,
-          decoration: const InputDecoration(
-            hintText: 'Search in diares',
+          decoration: InputDecoration(
+            hintText: "search_hint".tr(),
           ),
           onChanged: (value) {
             setState(() {
@@ -68,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '${showData.length} ${showData.length < 2 ? 'diary' : 'diaries'} found',
+                '${showData.length} ${showData.length < 2 ? "search_count_single".tr() : "search_count_multiple".tr()} ${"search_count_found".tr()}',
               ),
             ),
           ),
