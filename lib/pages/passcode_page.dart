@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
+import 'package:flutter_memories_dailyjournal/pages/change_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/security_question.dart';
 import '../services/secure_storage.dart';
 import '../widgets/show_flush_bar.dart';
@@ -459,7 +459,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           );
           clearPinField();
         } else {
-          // await CheckUserSession.setUserSession('logged');
+          await CheckUserSession.setUserSession('logged');
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
         }
@@ -485,7 +485,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomePage(),
+              builder: (context) => const ChangePage(),
             ),
           );
         }
