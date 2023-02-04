@@ -373,9 +373,9 @@ class _CreateDiaryState extends State<CreateDiary> {
           ? Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: const BorderRadius.vertical(
+              decoration: const BoxDecoration(
+                // color: Colors.grey[50],
+                borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
                 ),
               ),
