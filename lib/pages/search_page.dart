@@ -20,7 +20,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     originalData = diariesBox.values.toList();
     super.initState();
   }
