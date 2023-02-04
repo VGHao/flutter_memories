@@ -44,7 +44,7 @@ class FloatingButtonWidget extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(20),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.blue[300],
               foregroundColor: Colors.white,
             ),
             child: const Icon(

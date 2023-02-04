@@ -27,37 +27,54 @@ class ImageGallery extends StatelessWidget {
           title: Text("img_gallery_title".tr()),
           centerTitle: true,
         ),
-        body: GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          crossAxisSpacing: 2.0,
-          mainAxisSpacing: 2.0,
-          padding: const EdgeInsets.all(0.0),
-          children: [
-            ...List<Widget>.generate(
-              imgList.length,
-              (int index) => InkWell(
-                onTap: () => showImageViewer(
-                  context,
-                  FileImage(
-                    File(imgList[index]),
-                  ),
-                  useSafeArea: false,
-                  doubleTapZoomable: true,
-                  swipeDismissible: true,
+        body: imgList.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.info_outline_rounded, size: 30),
+                    SizedBox(height: 10),
+                    Text(
+                      "No Image Found",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Image.file(
-                    File(imgList[index]),
-                    fit: BoxFit.cover,
+              )
+            : GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 2.0,
+                mainAxisSpacing: 2.0,
+                padding: const EdgeInsets.all(0.0),
+                children: [
+                  ...List<Widget>.generate(
+                    imgList.length,
+                    (int index) => InkWell(
+                      onTap: () => showImageViewer(
+                        context,
+                        FileImage(
+                          File(imgList[index]),
+                        ),
+                        useSafeArea: false,
+                        doubleTapZoomable: true,
+                        swipeDismissible: true,
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Image.file(
+                          File(imgList[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

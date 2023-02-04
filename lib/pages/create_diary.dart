@@ -266,10 +266,12 @@ class _CreateDiaryState extends State<CreateDiary> {
                             elevation: 0,
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(15),
-                            // backgroundColor: Colors.white,
+                            backgroundColor: Colors.blue[300],
                           ),
-                          child: Image.asset(moodIconList[selectedMood!],
-                              height: 32),
+                          child: Image.asset(
+                            moodIconList[selectedMood!],
+                            height: 32,
+                          ),
                         ),
                         const VerticalDivider(
                           width: 30,
