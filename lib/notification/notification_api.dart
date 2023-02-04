@@ -13,7 +13,8 @@ class NotificationApi {
   Future<void> setup() async {
     tz.initializeTimeZones();
     // #1
-    const androidSetting = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSetting =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const iosSetting = DarwinInitializationSettings();
 
     // #2
