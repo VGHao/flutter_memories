@@ -114,7 +114,8 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
             ),
           ),
           buildKeyBoard(),
-          checkUserEvent == 'checkPassOnResume'
+          checkUserEvent == 'checkPassOnResume' ||
+                  checkUserEvent == 'checkPassOnCreate'
               ? buildResetBtn()
               : const SizedBox(
                   height: 60,
