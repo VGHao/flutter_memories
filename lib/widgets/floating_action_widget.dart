@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/calendar_diary.dart';
 import 'package:flutter_memories_dailyjournal/pages/create_diary.dart';
 import 'package:flutter_memories_dailyjournal/pages/image_gallery.dart';
 
@@ -17,7 +18,10 @@ class FloatingButtonWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const CalendarDiary()));
+            },
             style: ElevatedButton.styleFrom(
               elevation: 0,
               shape: const CircleBorder(),

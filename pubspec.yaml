@@ -33,6 +33,7 @@ dependencies:
   easy_image_viewer: ^1.2.0
   restart_app: any
   google_sign_in: any
+  table_calendar: ^3.0.8
 
 dev_dependencies:
   flutter_test:

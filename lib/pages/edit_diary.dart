@@ -55,7 +55,7 @@ class _EditDiaryState extends State<EditDiary> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1900),
       lastDate: DateTime(now.year, now.month, now.day),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
     );
@@ -502,8 +502,8 @@ class _EditDiaryState extends State<EditDiary> {
           ? Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10.0),
-              decoration: const BoxDecoration(
-                // color: Colors.grey[50],
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
                 ),
