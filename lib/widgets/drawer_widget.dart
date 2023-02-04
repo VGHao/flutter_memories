@@ -55,6 +55,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      builder: (context) => const SettingPage(),
+                    ),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
                       builder: (context) => const ChangeTheme(),
                     ),
                   );
