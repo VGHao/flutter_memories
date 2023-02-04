@@ -134,8 +134,7 @@ class _BodyContentState extends State<BodyContent> {
                   onPressed: onPressed,
                 )
               : const SizedBox(),
-          leading: (userAvatar != "" ||
-           userAvatar == "null")
+          leading: (userAvatar != "" || userAvatar == "null")
               ? CircleAvatar(
                   radius: 25,
                   backgroundImage: NetworkImage(
