@@ -84,11 +84,25 @@
     "confirm_change_language_title": "Language",
     "confirm_change_language_content": "Change Language successfully",
     "backup_page_title": "Backup & Restore",
-    "backup_page_backup_tile_title": "Sao lưu dữ liệu",
-    "backup_page_restore_tile_title": "Khôi phục dữ liệu",
+    "backup_page_backup_tile_title": "Backup data",
+    "backup_page_restore_tile_title": "Restore data",
     "backup_page_gg_tile_title": "Choose a Google account",
     "backup_page_gg_tile_subtitle" : "Backup Account",
     "backup_change_account_btn": "Change account",
     "backup_remove_account_btn": "Remove account",
-    "img_gallery_title": "Gallery"
+    "img_gallery_title": "Gallery",
+    "img_gallery_empty": "No Image Found",
+    "exit_dialog_title": "Exit App",
+    "exit_dialog_content": "Do you want to exit the app?",
+    "calendar_appbar_title": "Calendar",
+    "calendar_empty": "There is nothing here",
+    "empty_content_diary" : "You didn't write anything this day",
+    "sort_menu_latest": "Latest First",
+    "sort_menu_oldest": "Oldest First",
+    "search_hint": "Search in diares",
+    "search_count_single": "diary",
+    "search_count_multiple": "diaries",
+    "search_count_found" : "found"
+    
+
 }
