@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/about_us_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/backup_and_restore.dart';
 import 'package:flutter_memories_dailyjournal/pages/change_theme.dart';
+import 'package:flutter_memories_dailyjournal/pages/home_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/language_page.dart';
 import 'package:flutter_memories_dailyjournal/notification/notification_api.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_memories_dailyjournal/pages/privacy_policy_page.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
+import 'package:flutter_memories_dailyjournal/pages/term_and_conditions.dart';
 import '../services/secure_storage.dart';
 import 'passcode_page.dart';
 
@@ -46,7 +49,12 @@ class _SettingPageState extends State<SettingPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
           },
         ),
       ),
@@ -139,23 +147,37 @@ class _SettingPageState extends State<SettingPage> {
               icon: Icons.security,
               title: 'setting_privacy_policy'.tr(),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => PrivacyPolicyPage(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyPage(),
+                  ),
+                );
               },
             ),
             SettingItems(
               icon: Icons.shield,
               title: 'setting_tems_conditions'.tr(),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TermsAndConditions(),
+                  ),
+                );
+              },
             ),
             SettingItems(
               icon: Icons.info_outline,
               title: 'setting_about_us'.tr(),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutUsPage(),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -268,7 +290,7 @@ class _RemindTimeTileState extends State<RemindTimeTile> {
     NotificationApi.showScheduledNotification(
       title: 'Memories - Daily Journal',
       body: 'Time to write your new diary',
-      payload: 'diary',
+      payload: 'assets/images/icon_launcher/icon_launcher.png',
       hour: int.parse(selectedTime.split(":")[0]),
       minute: int.parse(selectedTime.split(":")[1]),
     );
