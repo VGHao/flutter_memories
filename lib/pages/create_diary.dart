@@ -186,6 +186,7 @@ class _CreateDiaryState extends State<CreateDiary> {
                     );
                     addDiary(newDiary);
                     Navigator.of(context).pop();
+                    showFlushBar(context, "save_success".tr());
                   }
                 },
                 icon: const Icon(

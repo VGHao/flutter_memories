@@ -37,9 +37,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
   }
 
   Widget html = Html(
-    data: """<p>
-                Memories - Daily Journal is a journaling application that helps users have a private place
-                to write down their thoughts, feelings, views on everything from work, study, love, friend …
-            </p>""",
+    data: """<pre>
+Memories - Daily Journal\n
+A journaling application that helps users have a private place to write down their thoughts, feelings, views on everything from work, study, love, friend</pre>""",
   );
 }

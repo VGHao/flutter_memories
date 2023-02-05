@@ -299,6 +299,7 @@ class _EditDiaryState extends State<EditDiary> {
                           handleDeleteImg("save");
                           saveDiary(newDiary);
                           Navigator.popUntil(context, ModalRoute.withName('/'));
+                          showFlushBar(context, "save_success".tr());
                         }
                       },
                       icon: const Icon(
