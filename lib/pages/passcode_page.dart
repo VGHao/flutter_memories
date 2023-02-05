@@ -157,12 +157,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
       padding: const EdgeInsets.all(8),
       child: MaterialButton(
         onPressed: () async {
-          if (checkUserEvent == 'checkToTurnOff') {
-            Navigator.pop(context);
-          }
-          //  else {
-          //   await Navigator.pushReplacementNamed(context, 'set-lock');
-          // }
+          Navigator.pop(context);
         },
         height: 50,
         minWidth: 50,
