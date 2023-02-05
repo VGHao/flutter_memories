@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../constants.dart';
 import '../models/diary.dart';
+import 'home_page.dart';
 
 class EditDiary extends StatefulWidget {
   final int diaryId;
@@ -111,7 +112,11 @@ class _EditDiaryState extends State<EditDiary> {
     )) {
       deleteAllImg();
       diariesBox.deleteAt(widget.diaryId);
-      return Navigator.popUntil(context, ModalRoute.withName('/'));;
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false);
+      return;
     }
     return;
   }
@@ -298,7 +303,11 @@ class _EditDiaryState extends State<EditDiary> {
                           );
                           handleDeleteImg("save");
                           saveDiary(newDiary);
-                          Navigator.popUntil(context, ModalRoute.withName('/'));
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()),
+                              (route) => false);
                           showFlushBar(context, "save_success".tr());
                         }
                       },
