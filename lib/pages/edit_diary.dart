@@ -111,7 +111,7 @@ class _EditDiaryState extends State<EditDiary> {
     )) {
       deleteAllImg();
       diariesBox.deleteAt(widget.diaryId);
-      return Navigator.of(context).pop();
+      return Navigator.popUntil(context, ModalRoute.withName('/'));;
     }
     return;
   }
