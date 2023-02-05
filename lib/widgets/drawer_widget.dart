@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
 import '../pages/backup_and_restore.dart';
 import '../pages/change_theme.dart';
+import '../pages/passcode_page.dart';
 import '../pages/setting_page.dart';
 import '../services/secure_storage.dart';
 import 'drawer_items.dart';
@@ -74,7 +75,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 thickness: 1,
               ),
               DrawerItems(
-                icon: Icons.color_lens_outlined,
+                icon: Icons.lock_outline,
                 title: "drawer_diary_lock".tr(),
                 onTap: () {
                   Navigator.pop(context);
@@ -84,12 +85,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       builder: (context) => const SettingPage(),
                     ),
                   );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SetDiaryLock(),
-                    ),
-                  );
+                  if (securePin != "") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const PasscodePage(checked: 'checkToTurnOff'),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SetDiaryLock(),
+                      ),
+                    );
+                  }
                 },
               ),
               DrawerItems(
