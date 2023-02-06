@@ -103,5 +103,6 @@
     "search_count_single": "diary",
     "search_count_multiple": "diaries",
     "search_count_found": "found",
-    "save_success": "Save Successfully"
+    "save_success": "Save Successfully",
+    "set_languages_title": "Set Language"
 }

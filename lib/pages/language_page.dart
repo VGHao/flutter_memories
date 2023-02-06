@@ -56,7 +56,7 @@ class _LanguagePageState extends State<LanguagePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text('set_lock_title'.tr()),
+        title: Text('set_languages_title'.tr()),
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
