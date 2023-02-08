@@ -4,7 +4,7 @@ A journaling application that helps users have a private place to write down the
 
 ## Getting Started
 
-To run the application, please run the following command in your terminal:
+To run the application, please run the following commands in your terminal:
 
 1. flutter pub get
 2. flutter build apk
