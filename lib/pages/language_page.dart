@@ -1,6 +1,8 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:devicelocale/devicelocale.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_memories_dailyjournal/services/secure_storage.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -11,22 +13,37 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
+  String? _currentLocale;
+
   @override
   void initState() {
     super.initState();
-
+    _getCurrentLocale();
     init();
   }
 
+  Future<void> _getCurrentLocale() async {
+    final currentLocale = await Devicelocale.currentLocale;
+    setState(() => _currentLocale = currentLocale);
+  }
+
   Future init() async {
-    String language = await SelectedLanguage.getLanguage() ?? 'en_US';
+    String language = await SelectedLanguage.getLanguage() ?? '';
 
     setState(() {
-      for (var element in listLanguage) {
-        if (element["language_name"] == language) {
-          element["isSelected"] = true;
+      if (language == "") {
+        if (_currentLocale == "vi-VN") {
+          listLanguage[1]["isSelected"] = true;
         } else {
-          element["isSelected"] = false;
+          listLanguage[0]["isSelected"] = true;
+        }
+      } else {
+        for (var element in listLanguage) {
+          if (element["language_name"] == language) {
+            element["isSelected"] = true;
+          } else {
+            element["isSelected"] = false;
+          }
         }
       }
     });
@@ -36,7 +53,7 @@ class _LanguagePageState extends State<LanguagePage> {
     {
       'id': 0,
       'title': 'English',
-      'isSelected': true,
+      'isSelected': false,
       'language_name': 'en_US',
       'language': 'en',
       'country': 'US',
