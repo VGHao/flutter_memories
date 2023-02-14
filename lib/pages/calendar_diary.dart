@@ -55,6 +55,15 @@ class _CalendarDiaryState extends State<CalendarDiary> {
             firstDay: DateTime(1900),
             lastDay: DateTime.now(),
             focusedDay: _focusedDay,
+            calendarStyle: CalendarStyle(
+              markerDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Theme.of(context)
+                    .appBarTheme
+                    .foregroundColor
+                    ?.withOpacity(0.5),
+              ),
+            ),
             calendarFormat: _calendarFormat,
             availableCalendarFormats: const {
               CalendarFormat.week: 'Month',
@@ -83,6 +92,7 @@ class _CalendarDiaryState extends State<CalendarDiary> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+            eventLoader: (day) => _getDiariesForDay(day),
           ),
           Expanded(
             child: ValueListenableBuilder(
