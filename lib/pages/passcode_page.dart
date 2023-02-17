@@ -227,7 +227,7 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         width: MediaQuery.of(context).size.width * 0.8,
         alignment: Alignment.bottomCenter,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 32),
+          padding: const EdgeInsets.only(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
