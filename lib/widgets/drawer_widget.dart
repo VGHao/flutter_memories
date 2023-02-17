@@ -20,7 +20,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   String text =
-      'I am using My Diary to write down all my thoughts and memories. Share it with you now \n https://drive.google.com/file/d/1lvSj1wwR32HChZGAl4206ClqXOAEWZb2/view?usp=share_link';
+      'I am using Memories - Daily Journal to write down all my thoughts and memories. Share it with you now \n https://drive.google.com/file/d/1lvSj1wwR32HChZGAl4206ClqXOAEWZb2/view?usp=share_link';
   String subject = '';
 
   String securePin = "";
