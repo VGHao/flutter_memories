@@ -2,7 +2,6 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:devicelocale/devicelocale.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_memories_dailyjournal/services/secure_storage.dart';
 
 class LanguagePage extends StatefulWidget {
