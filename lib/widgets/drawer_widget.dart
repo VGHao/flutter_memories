@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memories_dailyjournal/pages/set_diary_lock.dart';
+import 'package:share_plus/share_plus.dart';
 import '../pages/backup_and_restore.dart';
 import '../pages/change_theme.dart';
 import '../pages/passcode_page.dart';
@@ -18,6 +19,8 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  String text = '';
+  String subject = '';
   String securePin = "";
 
   @override
@@ -33,6 +36,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     setState(() {
       securePin = pin;
     });
+  }
+
+  void _onShare() async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    await Share.share(
+      text,
+      subject: subject,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
   }
 
   @override
@@ -129,7 +142,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               DrawerItems(
                 icon: Icons.share_outlined,
                 title: "drawer_share_app".tr(),
-                onTap: () {},
+                onTap: () {
+                  _onShare();
+                },
               ),
               DrawerItems(
                 icon: Icons.settings_outlined,
