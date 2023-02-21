@@ -3,6 +3,7 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_memories_dailyjournal/pages/share_diary.dart';
 import 'package:flutter_memories_dailyjournal/widgets/show_flush_bar.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:hive/hive.dart';
@@ -350,6 +351,23 @@ class _EditDiaryState extends State<EditDiary> {
               ),
               isEditing ? textToolbarWidget() : Container(),
             ],
+          ),
+          floatingActionButton: Visibility(
+            visible: !isEditing,
+            child: FloatingActionButton(
+              backgroundColor: Colors.blue[300],
+              elevation: 2,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ShareDiary(
+                      currentDiary: widget.currentDiary,
+                    ),
+                  ),
+                );
+              },
+              child: const Icon(Icons.share, color: Colors.white),
+            ),
           ),
         ),
       ),
